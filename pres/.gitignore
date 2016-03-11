@@ -1,0 +1,12 @@
+*.nav
+*.out
+*.snm
+*.toc
+*.aux
+*.log
+*.bbl
+*.blg
+*.swp
+pres.pdf
+# don't commit the plots till they are finalized
+figs/plots/
