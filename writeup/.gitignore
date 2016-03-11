@@ -7,5 +7,5 @@
 *.bbl
 *.blg
 *.swp
-*.bib
+*Notes.bib
 writeup.pdf
