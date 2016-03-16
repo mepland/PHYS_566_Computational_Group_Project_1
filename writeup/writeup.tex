@@ -146,9 +146,6 @@ TODO
 \label{sec:intro}
 TODO
 
-\section{Theory}
-\label{sec:theory}
-TODO
 
 \subsection{TODO}
 \label{subsec:TODO}
@@ -158,6 +155,53 @@ TODO
 x &= y \label{eq:todo1} \\
 y &= z \label{eq:todo2}
 \end{align}
+
+\section{Theory}
+\label{sec:theory}
+\subsection{Random Walk and Diffusion}
+\label{sec:theory_2}
+Suppose $P(i, j, k, n)$ is the probability to find the particle at $(x, y, z)$ at time $t$. If walker is on one of the 6 nearest neighbor sites of time $t = n - 1$, there is a probability of $\frac{1}{6}$ that it will move to $(i, j, k)$ at time n.
+\begin{equation}
+	P(i, j, k) = \frac{1}{6}[P(i, j, k, n-1) + P(i-1, j, k, n-1) + P(i, j+1, k, n-1) + P(i, j-1, k, n-1) + P(i, j, k+1, n-1) + P(i, j, k-1, n-1)].
+\end{equation}
+Rearranging this equation, we get
+\begin{equation}
+	\begin{split}
+		P(i, j, k, n) - P(i, j, k, n-1) = \frac{1}{6}\lbrace &[P(i+1, j, k, n-1) - 2P(i, j, k, n-1) + P(i-1, j, k, n-1)]\\
+		+ &[P(i, j+1, k, n-1) - 2P(i, j, k, n-1) + P(i, j-1, k, n-1)]\\
+		+ &[P(i, j, k+1, n-1) - 2P(i, j, k, n-1) + P(i, j, k-1, n-1)]\rbrace.
+	\end{split}
+\end{equation}
+Apart from factor $1/\Delta t$, the left side of this equation is just the finite difference approximation for the time derivative of $P$, while the right-hand side is proportional to a second order space derivative. This suggests taking the continuum limit, which leads to
+\begin{equation} \label{eq:2_1}
+	\frac{\partial P(x, y, z, t)}{\partial t} = D\nabla^{2}P(x,y,z,t),
+\end{equation} 
+where $D = (1/6)(\Delta x)^{2} / \Delta t$ in this approximation. Eqn.~\eqref{eq:2_1} is the diffusion equation, and our derivative shows the close connection between the random walks and diffusion. The density $\rho$ obeys the same equation
+\begin{equation} \label{eq:2_2}
+	\frac{\partial \rho}{\partial t} = D\nabla^{2}\rho.
+\end{equation}
+
+Converting Eqn.~\eqref{eq:2_2} to one dimension yields
+\begin{equation}
+	\frac{\partial\rho}{\partial t} = D\frac{\partial^{2}\rho}{\partial x^{2}},
+\end{equation}
+and the finite-difference version of this equation is 
+\begin{equation}
+	\frac{\rho(i, n+1) - \rho(i, n)}{\Delta t} = \frac{\rho(i+1, n) - 2\rho(i, n) + \rho(i-1, n)}{(\Delta x)^{2}}
+\end{equation}
+Rearranging to express the density at time step $n+1$ in terms of $\rho$ at step $n$ we find
+\begin{equation} \label{eq:2_3}
+	\rho(i, n+1) = \rho(i, n) + \frac{D\Delta t}{(\Delta x)^{2}}[\rho(i+1, n) - 2\rho(i, n) + \rho(i-1, n)]. 
+\end{equation}
+
+If we are given the initial distribution of the cream particles, $\rho(x, t=0)$, we can use Eqn.~\eqref{eq:2_3} to solve for $\rho$ at future times. General analytic solutions are hard to come by. One special case is 
+\begin{equation}
+	\rho(x, t) = \frac{1}{\sigma}e^{-\frac{x^{2}}{2\sigma^{2}}},
+\end{equation}
+where $\sigma$ is time-dependent, with $\sigma = \sqrt{2Dt}$. To guarantee numerical stability we must make sure that the space and time steps satisfy
+\begin{equation}
+	\Delta t \leq (\Delta x)^{2}/(2D).
+\end{equation}
 
 \clearpage
 \section{Results}
