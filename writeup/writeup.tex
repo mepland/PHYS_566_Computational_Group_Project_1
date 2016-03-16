@@ -162,7 +162,86 @@ y &= z \label{eq:todo2}
 \clearpage
 \section{Results}
 \label{sec:results}
+\subsection{2D Random Walk}
 TODO
+\newpage
+\subsection{Diffusion Equation}
+\label{subsec:results_2}
+\subsubsection{Part a}
+\label{subsubsec:results_2_a}
+We derive the spatial expectation values $\expval{x^{2}(t)}$ as follow,
+\begin{align}
+	\expval{x^{2}(t)} &= \int_{-\infty}^{+\infty} \rho(x, t) x^{2} dx, \\
+	\expval{x^{2}(t)} &= \frac{2}{\sqrt{2\pi\sigma^{2}(t)}} \int_{0}^{+\infty} x^{2} \exp(-\frac{x^{2}}{2\sigma^{2}(t)}).
+\end{align}
+Now we use the Gaussian integral that
+\begin{equation}
+	\int_{0}^{+\infty} x^{2n} \exp{-x^{2}/a^{2}} dx = \sqrt{\pi} \frac{(2n)!}{n!}\Big( \frac{a}{2} \Big)^{2n+1}.
+\end{equation}
+Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
+\begin{equation}
+	\begin{split}
+		\expval{x^{2}(t)} &= \frac{2}{\sqrt{2\pi\sigma^{2}(t)}} \cdot \sqrt{\pi}\cdot \frac{2!}{1!} \cdot \Big( \frac{\sqrt{2}\sigma(t)}{2} \Big)^{3} \\
+		&= \sigma^{2}(t).
+	\end{split} 
+\end{equation}
+
+\newpage
+\subsubsection{Part b}
+\label{subsubsec:results_2_b}
+\begin{figure}[!htbc]
+  \centering
+  \includegraphics[width=.6\textwidth]{../output/plots_for_paper/part_b_300.pdf}
+  	{\par\nobreak\rule[9pt]{35em}{0.5pt}\vspace{-5mm}}
+	\caption{$t = 300\Delta t$}
+	\label{fig:part_b_1}
+  \includegraphics[width=.6\textwidth]{../output/plots_for_paper/part_b_600.pdf}
+  	{\par\nobreak\rule[9pt]{35em}{0.5pt}\vspace{-5mm}}
+	\caption{$t = 600\Delta t$}
+	\label{fig:part_b_2}
+\end{figure}
+
+\newpage
+\begin{figure}[!htbc]
+  \centering
+  \includegraphics[width=.6\textwidth]{../output/plots_for_paper/part_b_1200.pdf}
+  	{\par\nobreak\rule[9pt]{35em}{0.5pt}\vspace{-5mm}}
+	\caption{$t = 1200\Delta t$}
+	\label{fig:part_b_4}
+  \includegraphics[width=.6\textwidth]{../output/plots_for_paper/part_b_2400.pdf}
+  	{\par\nobreak\rule[9pt]{35em}{0.5pt}\vspace{-5mm}}
+	\caption{$t = 2400\Delta t$}
+	\label{fig:part_b_4}
+\end{figure}
+
+\newpage
+\begin{figure}[!htbc]
+  \centering
+  \includegraphics[width=.6\textwidth]{../output/plots_for_paper/part_b_4800.pdf}
+  	{\par\nobreak\rule[9pt]{35em}{0.5pt}\vspace{-5mm}}
+	\caption{$t = 4800\Delta t$}
+	\label{fig:part_b_5}
+\end{figure}
+\newline
+
+\begin{center}
+	\begin{tabular}{ | p{3cm} | p{3cm} | p{3cm} | p{3cm} |}
+		\hline
+		Number of Steps & Time & $\sigma(t) = \sqrt{2Dt}$ & $\sigma_{\mathrm{fit}}(t)$ \\
+		\hline
+		300  & 0.03 & 0.346410 & 0.362748 \\
+		\hline
+		600  & 0.60 & 0.489898 & 0.511874 \\ 
+		\hline
+		1200 & 1.20 & 0.692820 & 0.723106 \\
+		\hline
+		2400 & 2.40 & 0.979796 & 0.102207 \\
+		\hline
+		4800 & 4.80 & 0.138564 & 0.144493 \\
+		\hline
+	\end{tabular}
+\end{center}
+\newpage
 
 
 \clearpage
