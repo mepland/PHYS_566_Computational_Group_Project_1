@@ -66,7 +66,7 @@ eqSteps=eq(steps)                    #Plug in steps for independent variable in 
 
 ###############################Part A-xn####################################### 
 plt.figure()  
-plt.plot(steps, xAveNew,'r.',Label="Mean Distance")
+plt.plot(steps, xAveNew,'r.', label="Mean Distance")
 plt.title("xn Average Plot", fontsize=15)   #Plot Annotations
 plt.xlabel('Time', fontsize=12)
 plt.ylabel('Distance Travelled', fontsize=12)
@@ -75,7 +75,7 @@ plt.savefig("xn_Plot.pdf")               #Save the Plot as a PDF
 
 ##############################Part A-xn^2###################################### 
 plt.figure()  
-plt.plot(steps, x2aveNew,'r.',Label="Mean Square Distance")
+plt.plot(steps, x2aveNew,'r.', label="Mean Square Distance")
 plt.title("xn^2 Average Plot", fontsize=15)   #Plot Annotations
 plt.xlabel('Time', fontsize=12)
 plt.ylabel('Distance Travelled Squared', fontsize=12)
@@ -84,8 +84,8 @@ plt.savefig("xn2_Plot.pdf")               #Save the Plot as a PDF
 
 ###########################Part B-Diffusive Motion#############################  
 plt.figure()  
-plt.plot(steps, distNew,'r.',Label="Mean Square Distance")
-plt.plot(steps, eqSteps,'b',linewidth=2, Label="Linear Fit")
+plt.plot(steps, distNew,'r.', label="Mean Square Distance")
+plt.plot(steps, eqSteps,'b',linewidth=2, label="Linear Fit")
 plt.title("Diffusive Motion Plot", fontsize=15)   #Plot Annotations
 plt.xlabel('Time', fontsize=12)
 plt.ylabel('Distance Travelled Squared', fontsize=12)
