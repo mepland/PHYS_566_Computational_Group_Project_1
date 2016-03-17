@@ -38,13 +38,13 @@ xAve /= m
 x2ave /= m
 dist2 /= m
     
-distNew = dist2[2:100]                        #Get the dist for n>3 up to n=100
-xAveNew = xAve[2:100]                        #Get the xAve for n>3 up to n=100
-x2aveNew = x2ave[2:100]                      #Get the x2ave for n>3 up to n=100
+distNew = dist2[3:100]                        #Get the dist for n>3 up to n=100
+xAveNew = xAve[3:100]                        #Get the xAve for n>3 up to n=100
+x2aveNew = x2ave[3:100]                      #Get the x2ave for n>3 up to n=100
 
 #################################Part B########################################
 
-steps=np.arange(3, n + 1, 1)                  #Get an array of steps to use for plotting
+steps=np.arange(4, n + 1, 1)                  #Get an array of steps to use for plotting
 
 
 
