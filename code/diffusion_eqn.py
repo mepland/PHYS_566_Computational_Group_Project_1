@@ -67,8 +67,8 @@ fitting_data = []       # save fitting data
 theoretical_data = []   # save theoretical data
 time_data = []          # save time
 count_data = []         # save count
-plots_path = '../output/plots_for_paper'
-data_path = '../output/data/part_b'
+plots_path = '../output/plots_for_paper/problem_2'
+data_path = '../output/data/problem_2'
 
 # make path
 make_path(plots_path)
