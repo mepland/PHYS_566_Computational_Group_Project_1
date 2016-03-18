@@ -28,7 +28,7 @@ def func(x, sigma):
     return 1.0 / (sqrt(2 * pi) * sigma) * np.exp(- x ** 2 / (2.0 * sigma ** 2))
 
 
-def plot(file_name, sigma, t):
+def plot(sigma, t,color1, color2):
     """
     Plot the figure.
     :param file_name: file name.
@@ -41,16 +41,16 @@ def plot(file_name, sigma, t):
     popt, pcov = curve_fit(func, x, rho, guess)  # curve fitting
     y = 1.0 / (sqrt(2 * pi) * sigma) * np.exp(- x ** 2 / (2 * sigma ** 2))
     # plot
-    plt.plot(x, rho, marker='o', color='b', label='Numeric result')
-    plt.plot(x, y, color='r', label=r'Gaussian fit with $\sigma(t) = %.5f$' % sigma)
-    plt.title('Diffusion in one dimension at t = %.2f' % t)
-    plt.xlabel('position ' + r'$x$')
-    plt.ylabel('density ' + r'$\rho(x)$')
-    plt.legend()
-    fig = plt.gcf()
-    fig.set_size_inches(12, 10, forward=True)
-    plt.savefig(plots_path + '/' + file_name + '.pdf')
-    plt.close()
+    plt.plot(x, rho, marker='o', color=color1, label='Numeric result (time = %.2f)' %t)
+    plt.plot(x, y, color=color2, lw=2,label=r'Gaussian fit with $\sigma(t) = %.5f$' % sigma)
+#    plt.title('Diffusion in one dimension at t = %.2f' % t)
+#    plt.xlabel('position ' + r'$x$')
+#    plt.ylabel('density ' + r'$\rho(x)$')
+#    plt.legend()
+#    fig = plt.gcf()
+#    fig.set_size_inches(12, 10, forward=True)
+#    plt.savefig(plots_path + '/' + file_name + '.pdf')
+#    plt.close()
 
 
 # initialization
@@ -62,6 +62,7 @@ rho = np.zeros(size)          # density
 x = np.linspace(-5, 5, size)  # position
 t = 0.0           # time
 count = 0         # number of time steps
+n = 0			# number of plots
 steps = [300, 600, 1200, 2400, 4800]  # five different time
 fitting_data = []       # save fitting data
 theoretical_data = []   # save theoretical data
@@ -69,6 +70,8 @@ time_data = []          # save time
 count_data = []         # save count
 plots_path = '../output/plots_for_paper/problem_2'
 data_path = '../output/data/problem_2'
+color1 = ['darkviolet', 'coral', 'orange', 'green', 'blue']
+color2 = ['violet', 'lightcoral', 'gold', 'limegreen', 'lightblue'] 
 
 # make path
 make_path(plots_path)
@@ -76,6 +79,9 @@ make_path(data_path)
 
 # initial condition (initial density peaks around x = 0)
 rho[size / 2 - 1: size / 2 + 2] = 1.0 / (3.0 * dx)
+
+fig = plt.gcf()
+fig.set_size_inches(12, 10, forward=True)
 
 for i in range(5000):
     for j in range(1, size - 1):
@@ -88,7 +94,14 @@ for i in range(5000):
         fitting_data.append(popt[0])
         time_data.append(t)
         theoretical_data.append(sqrt(2.0 * D * t))
-        plot('part_b_%d' % count, popt[0], t)  # plot the figure
+        plot(popt[0], t, color1[n], color2[n])  # plot the figure
+        n += 1
 
+plt.title('Diffusion in one dimension')
+plt.xlabel('position ' + r'$x$')
+plt.ylabel('density ' + r'$\rho(x)$')
+plt.legend()
+plt.savefig('../output/plots_for_paper/problem_2/part_b.pdf')
+plt.show()
 # save data | number of time steps | time | theoretical data | fitting data |
 np.savetxt(data_path + '/data.txt', np.transpose(np.array([steps, time_data, theoretical_data, fitting_data])))
