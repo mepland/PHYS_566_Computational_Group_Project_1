@@ -41,8 +41,8 @@ def plot(sigma, t,color1, color2):
     popt, pcov = curve_fit(func, x, rho, guess)  # curve fitting
     y = 1.0 / (sqrt(2 * pi) * sigma) * np.exp(- x ** 2 / (2 * sigma ** 2))
     # plot
-    plt.plot(x, rho, marker='o', color=color1, label='Numeric result (time = %.2f)' %t)
-    plt.plot(x, y, color=color2, lw=2,label=r'Gaussian fit with $\sigma(t) = %.5f$' % sigma)
+    plt.plot(x, rho, marker='o', markevery=5, color=color1, mec=color1, label='Numeric result $(t = %.2f)$' % t)
+    plt.plot(x, y, color=color2, lw=1, label=r'Gaussian fit with $\sigma(t) = %.5f$' % sigma)
 #    plt.title('Diffusion in one dimension at t = %.2f' % t)
 #    plt.xlabel('position ' + r'$x$')
 #    plt.ylabel('density ' + r'$\rho(x)$')
@@ -68,6 +68,7 @@ fitting_data = []       # save fitting data
 theoretical_data = []   # save theoretical data
 time_data = []          # save time
 count_data = []         # save count
+p_error = []            # save percent error
 plots_path = '../output/plots_for_paper/problem_2'
 data_path = '../output/data/problem_2'
 color1 = ['darkviolet', 'coral', 'orange', 'green', 'blue']
@@ -94,14 +95,15 @@ for i in range(5000):
         fitting_data.append(popt[0])
         time_data.append(t)
         theoretical_data.append(sqrt(2.0 * D * t))
+        p_error.append(abs(theoretical_data[-1] - fitting_data[-1]) / theoretical_data[-1] * 100.0)
         plot(popt[0], t, color1[n], color2[n])  # plot the figure
         n += 1
 
-plt.title('Diffusion in one dimension')
-plt.xlabel('position ' + r'$x$')
-plt.ylabel('density ' + r'$\rho(x)$')
+#plt.title('Diffusion in one dimension')
+plt.xlabel('position ' + r'$x$', fontsize=18)
+plt.ylabel('density ' + r'$\rho(x)$', fontsize=18)
 plt.legend()
 plt.savefig('../output/plots_for_paper/problem_2/part_b.pdf')
 plt.show()
-# save data | number of time steps | time | theoretical data | fitting data |
-np.savetxt(data_path + '/data.txt', np.transpose(np.array([steps, time_data, theoretical_data, fitting_data])))
+# save data | number of time steps | time | theoretical data | fitting data | Percent error |
+np.savetxt(data_path + '/data.txt', np.transpose(np.array([steps, time_data, theoretical_data, fitting_data, p_error])))
