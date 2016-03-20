@@ -147,17 +147,10 @@ TODO
 TODO
 
 \section{Theory}
-\subsection{TODO}
-\label{subsec:TODO}
-TODO
-
-\begin{align}
-x &= y \label{eq:todo1} \\
-y &= z \label{eq:todo2}
-\end{align}
 \label{sec:theory}
+
 \subsection{Random Walk and Diffusion}
-\label{sec:theory_2}
+\label{subsec:theory_2}
 Suppose $P(i, j, k, n)$ is the probability to find the particle at $(x, y, z)$ at time $t$. If walker is on one of the 6 nearest neighbor sites of time $t = n - 1$, there is a probability of $\frac{1}{6}$ that it will move to $(i, j, k)$ at time n.
 \begin{equation}
 	P(i, j, k) = \frac{1}{6}[P(i, j, k, n-1) + P(i-1, j, k, n-1) + P(i, j+1, k, n-1) + P(i, j-1, k, n-1) + P(i, j, k+1, n-1) + P(i, j, k-1, n-1)].
@@ -200,6 +193,15 @@ where $\sigma$ is time-dependent, with $\sigma = \sqrt{2Dt}$. To guarantee numer
 \begin{equation}
 	\Delta t \leq (\Delta x)^{2}/(2D).
 \end{equation}
+
+\subsection{Diffusion Limited Aggregation Model}
+\label{subsec:theory_3}
+Random walks can also be used to create clustering algorithms, such as the Diffusion Limited Aggregation Model (DLA). The DLA model works by generating a random walker at a random position far away from an initial seed, then letting the random walker walk until it touches the seed. At this point the walker, together with the seed, is considered part of the cluster and the process is repeated for a new random walker.
+
+In our implementation one initial seed at the origin was used and the random walkers were generated from a uniform $\theta$ distribution on a circle of radius $R = 100$. The space was discretized into a lattice with side lengths $\Delta x = \Delta y = 3$. The walkers ran until they met one of three halting conditions; 1) they contacted an existing cluster point and formed a new cluster point, 2) they traveled to far away from the cluster, specifically when $\mathrm{min}\left|\mathbf{r}_{\mathrm{Cluster\,Point}} - \mathbf{r}_{\mathrm{Walker}}\right| = d_{\mathrm{min}} > d_{\mathrm{Kill}} = 120$, or 3) they walked for too many steps, $t > t_{\mathrm{Kill}} = 10^{4}$.
+
+The clusters formed by the DLA method are typically sparse and irregular; almost fractal in shape. As such we can attempt to describe them by computing their fractal dimension
+TODO
 
 \clearpage
 \section{Results}
@@ -256,8 +258,11 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 		\hline
 	\end{tabular}
 \end{center}
-\newpage
 
+\clearpage
+\subsection{Diffusion Limited Aggregation Model}
+\label{subsec:results_3}
+TODO
 
 \clearpage
 \section{Conclusions}
@@ -282,7 +287,13 @@ The Python source code used to produce these results can be found online at \url
 \section{Code}
 \label{sec:code}
 
-%\lstinputlisting[style=python]{../code/TODO.py} % TODO
+\lstinputlisting[style=python]{../code/2D_random_walk.py}
+
+%\clearpage
+\lstinputlisting[style=python]{../code/diffusion_eqn.py}
+
+\clearpage
+\lstinputlisting[style=python]{../code/dla.py}
 
 \end{document} %%% end of doc %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
