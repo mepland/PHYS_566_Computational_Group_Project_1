@@ -317,16 +317,17 @@ def gen_large_cluster(optional_title, m_path, fname, seed):
 	log_r = np.log(R_count)
 	log_m = np.log(count)
 	fit = np.polyfit(log_r, log_m, 1)
-	print fit
 	d_f = fit[0]
-	fit_fn = np.poly1d(fit)
-	print 'The fractal dimension is %.2f' % d_f
-	
+	print '\n The fractal dimension is %.2f \n' % d_f
+
 	#check the fitting plot for d_f
+	#fit_fn = np.poly1d(fit)
 	#plt.figure(0)
 	#plt.plot(log_r, log_m, 'or',log_r, fit_fn(log_r),'-')
 	#plt.show()
-
+	
+	if(part_c): d_f_vals.append(d_f)
+	
 	plot_cluster(optional_title, m_path, fname, seed, cluster)
 
 	if(debugging): print 'gen_large_cluster() completed!!!'	
@@ -342,11 +343,13 @@ def gen_large_cluster(optional_title, m_path, fname, seed):
 ########################################################
 # Development Runs 
 
-if(True):
+#part a & b
+part_a_b = False
+if(part_a_b):
 	output_path = '../output/dev'
 	debugging = True
 	debugging2 = False
-
+	part_c = False
 
 	# cluster1 = gen_cluster(7, 5)
 	# plot_cluster(' cluster1', output_path, 'cluster1', 7, cluster1)
@@ -357,6 +360,29 @@ if(True):
 	# gen_large_cluster(optional_title, m_path, fname, seed)
 	gen_large_cluster('', output_path, 'test_large', 7)
 
+#part c
+part_c = True
+if(part_c):
+	output_path = '../output/dev'
+	debugging = True
+	debugging2 = False
+	
+	d_f_vals = [] #fractal dimension array
+	iter = 10 #number of iterations 
+	for j in range(iter):
+		if (debugging): print '\n \t Iteration #%d begins\n' %(j+1)
+		gen_large_cluster('', output_path, 'test_large_'+str(j), j+1)
+		if (debugging): print '\n \t Iteration #%d ends\n' %(j+1)
+	d_f_avr = np.sum(d_f_vals) / float(len(d_f_vals)) #average of d_f over all iterations
+	d_f_std = np.std(np.asarray(d_f_vals)) #standard deviation of d_f over all iterations
+
+	#print results of part c
+	print '================= part c ================='
+	print fractal dimensions array:
+	print d_f_vals
+	print 'Averaged fractal dimension is %.2f' %d_f_avr 
+	print 'standard deviation is %.2f ' %d_f_std
+	print '=========================================='
 
 
 ########################################################
