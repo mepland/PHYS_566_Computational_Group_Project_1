@@ -314,15 +314,18 @@ def gen_large_cluster(optional_title, m_path, fname, seed):
 	#calculate the fractal dimentsion for one large cluster 
 	R_count = np.array(R_count)
 	count = np.array(count)
-	d_f = np.log(count)/np.log(R_count)
-	d_f_avr = 0
-	for i in range(len(d_f)):
-		d_f_avr += d_f[i]
-	d_f_avr = d_f_avr/len(d_f)
-	#print R_count
-	#print count
-	#print d_f
-	print 'The averaged fractal dimension is %.2f' % d_f_avr
+	log_r = np.log(R_count)
+	log_m = np.log(count)
+	fit = np.polyfit(log_r, log_m, 1)
+	print fit
+	d_f = fit[0]
+	fit_fn = np.poly1d(fit)
+	print 'The fractal dimension is %.2f' % d_f
+	
+	#check the fitting plot for d_f
+	#plt.figure(0)
+	#plt.plot(log_r, log_m, 'or',log_r, fit_fn(log_r),'-')
+	#plt.show()
 
 	plot_cluster(optional_title, m_path, fname, seed, cluster)
 
