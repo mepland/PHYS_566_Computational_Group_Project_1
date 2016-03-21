@@ -296,11 +296,33 @@ def gen_large_cluster(optional_title, m_path, fname, seed):
 	# if(debugging): print 'r_large = %f' % r_large
 
 	# keep adding points until one is on or beyond R_start
+	# count points within different R
 	i = 0
+	R_count = [20,40,60,80,100] 
+	count = [0,0,0,0,0]
 	while cluster[i].r() < R_start:
 		i += 1
 		cluster.append(new_cluster_point(i-1, cluster))
+		if cluster[i].r() < R_count[0]: count[0] += 1
+		if cluster[i].r() < R_count[1]: count[1] += 1
+		if cluster[i].r() < R_count[2]: count[2] += 1
+		if cluster[i].r() < R_count[3]: count[3] += 1
+	count[4] = i
+
 	if(debugging): print 'large cluster generated!!'
+	
+	#calculate the fractal dimentsion for one large cluster 
+	R_count = np.array(R_count)
+	count = np.array(count)
+	d_f = np.log(count)/np.log(R_count)
+	d_f_avr = 0
+	for i in range(len(d_f)):
+		d_f_avr += d_f[i]
+	d_f_avr = d_f_avr/len(d_f)
+	#print R_count
+	#print count
+	#print d_f
+	print 'The averaged fractal dimension is %.2f' % d_f_avr
 
 	plot_cluster(optional_title, m_path, fname, seed, cluster)
 
