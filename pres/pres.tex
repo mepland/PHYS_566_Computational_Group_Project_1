@@ -112,9 +112,8 @@
 
 \titlegraphic{\includegraphics[height=2cm]{logos/duke_logo.pdf}}
 
-% Select between raw and saved plots here TODO
-\graphicspath{{../code/output/}}
-%\graphicspath{{../code/output/plots_for_paper/}}
+% Point to nice top level directory
+\graphicspath{{../output/plots_for_paper/}}
 
 \begin{document}
 
@@ -126,21 +125,78 @@
 \begin{frame}
   \frametitle{Introduction}
   \begin{itemize}
-    \item TODO
+    \item Bullet point text here TODO
   \end{itemize}
 
 \end{frame}
 
 \begin{frame}
-  \frametitle{Whole Page Figure TODO}
-
+  \frametitle{DLA Cluster: RNG Seed $= 6$}
 \begin{figure}
   \centering
-%  \includegraphics[width=0.95\textwidth]{part_a/TODO.pdf}
-  \includegraphics[width=0.95\textwidth]{logos/duke_logo.pdf}
+  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_seed_num_6.pdf}
 \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DLA Cluster Mass: RNG Seed $= 6$}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_mass_seed_num_6.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DLA Cluster: RNG Seed $= 10$}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_seed_num_10.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DLA Cluster Mass: RNG Seed $= 10$}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_mass_seed_num_10.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DLA Cluster: RNG Seed $= 12$}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_seed_num_12.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DLA Cluster Mass: RNG Seed $= 12$}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_mass_seed_num_12.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Fractal Dimensionality}
+
+  \begin{itemize}
+    \item Running over 10 different RNG seeds we find:
+    \begin{itemize}
+      \item $\left<d_{f}\right> = 1.30$, with Std. Dev. $= 0.10$ 
+    \end{itemize}
+  \end{itemize}
+
+% You can position text/figures/anyting at an arbitrary position with textblock*
+\begin{textblock*}{0.9\textwidth}(1.4cm,8.5cm) % {block width} (coords) note coords are from upper left corner
+{\tiny All $d_{f\,\mathrm{fit}} = 1.3347,\,1.3463,\,1.4241,\,1.3854,\,1.0841,\,1.3420,\,1.3673,\,1.2641,\,1.2410,\,1.1970$}
+\end{textblock*}
 
 \end{frame}
+
+
+
 
 \end{document}
 
