@@ -79,7 +79,7 @@ make_path(plots_path)
 ###############################Part A-xn####################################### 
 plt.figure()  
 plt.plot(steps, xAveNew,'r.', label="Mean Distance")
-plt.title(r'$\langle x_{n} \rangle$' + ' Plot', fontsize=15)   #Plot Annotations
+#plt.title(r'$\langle x_{n} \rangle$' + ' Plot', fontsize=15)   #Plot Annotations
 plt.xlabel('Time', fontsize=12)
 plt.ylabel('Distance Travelled', fontsize=12)
 #plt.legend()
@@ -89,7 +89,7 @@ plt.close()
 ##############################Part A-xn^2###################################### 
 plt.figure()  
 plt.plot(steps, x2aveNew,'r.', label="Mean Square Distance")
-plt.title(r'$\langle x_{n}^{2} \rangle$' + ' Plot', fontsize=15)   #Plot Annotations
+#plt.title(r'$\langle x_{n}^{2} \rangle$' + ' Plot', fontsize=15)   #Plot Annotations
 plt.xlabel('Time', fontsize=12)
 plt.ylabel('Distance Travelled Squared', fontsize=12)
 #plt.legend()
@@ -100,7 +100,7 @@ plt.close()
 plt.figure()  
 plt.plot(steps, distNew,'r.', label="Mean Square Distance")
 plt.plot(steps, eqSteps,'b',linewidth=2, label="Linear Fit")
-plt.title("Diffusive Motion Plot", fontsize=15)   #Plot Annotations
+#plt.title("Diffusive Motion Plot", fontsize=15)   #Plot Annotations
 plt.xlabel('Time', fontsize=12)
 plt.ylabel('Distance Travelled Squared', fontsize=12)
 plt.legend(loc='upper left')
