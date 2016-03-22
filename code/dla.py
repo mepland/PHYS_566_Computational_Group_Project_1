@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
-#from scipy.optimize import curve_fit
+from scipy.optimize import curve_fit
 import math
 import random
 
@@ -156,7 +156,7 @@ class cluster_point:
 
 # Define a function to get a new cluster point
 def new_cluster_point(index, cluster = []):
-	if(debugging): print 'Beginning new_cluster_point, index = %d ' % index	
+	if(debugging2): print 'Beginning new_cluster_point, index = %d ' % index	
 
 	# repeatedly generate m_walker until one hits the cluster
 
@@ -193,7 +193,8 @@ def new_cluster_point(index, cluster = []):
 	return m_walker
 # end def for new_cluster_point()
 
-# Define a function to generate cluster
+# Define a function to generate cluster, fixed size if size > 1, or
+# just grow until one point is on or beyond R_start if size <= 0
 def gen_cluster(seed, size):
 	random.seed(seed)
 
@@ -204,16 +205,26 @@ def gen_cluster(seed, size):
 	cluster[0].y = 0.0
 	cluster[0].fixed = True
 
-	# Fill the rest of the points
-	for i in range(size-1):
-		cluster.append(new_cluster_point(i, cluster))
+	# If size > 0, make fixed size cluster
+	if size > 0:
+		for i in range(size-1):
+			cluster.append(new_cluster_point(i, cluster))
+
+		if(debugging): print 'cluster of size %d generated!!' % size
+
+	elif size <= 0:
+		i = 0
+		while cluster[i].r() < R_start:
+			i += 1
+			cluster.append(new_cluster_point(i-1, cluster))
+
+		if(debugging): print 'large cluster generated!!'
 
 	return cluster
 # end def for gen_cluster()
 
-
 # Define a function to plot a cluster
-def plot_cluster(optional_title, m_path, fname, seed, cluster = []):
+def plot_cluster(fit_upper_cutoff, optional_title, m_path, fname, seed, cluster = []):
 	if(debugging): print 'Beginning plot_cluster()'
 
 	# Set up the figure and axes
@@ -249,11 +260,16 @@ def plot_cluster(optional_title, m_path, fname, seed, cluster = []):
 	ax.add_artist(starting_radius_circle)
 	legend_handles.append(mlines.Line2D([], [], ls='dashed', color='grey', label='$R_{\mathrm{Start}}$'))
 
+	# make a circle on the fit upper cutoff
+	fit_upper_cutoff_circle = plt.Circle((0,0), fit_upper_cutoff, ls='dotted', color='darkmagenta', fill=False, label='$m(r)$ Fit Cut Off')
+	ax.add_artist(fit_upper_cutoff_circle)
+	legend_handles.append(mlines.Line2D([], [], ls='dotted', color='darkmagenta', label='$m(r)$ Fit Cut Off'))
+
 	# draw legend
  	ax.legend(handles=legend_handles, bbox_to_anchor=(1.03, 1), borderaxespad=0, loc='upper left', fontsize='x-small')
 
 	# Annotate
-	ann_text = 'Seed = %d\n$N =$ %.2G' % (seed, len(cluster))
+	ann_text = 'RNG Seed = %d\n$N =$ %d' % (seed, len(cluster))
 	ann_text += '\n$\Delta x =$ %.1f, $\Delta y =$ %.1f' % (Dx, Dy)
 	ann_text += '\n$R_{\mathrm{Start}} =$ %.1f' % (R_start)
 	ann_text += '\n$d_{\mathrm{Kill}} =$ %.1f\n$t_{\mathrm{Kill}} =$ %G' % (d_kill, step_kill)
@@ -271,67 +287,156 @@ def plot_cluster(optional_title, m_path, fname, seed, cluster = []):
 	if(debugging): print 'plot_cluster() completed!!!'
 # end def for plot_cluster()
 
-# Define a wrapper function to generate and plot a cluster
-def gen_and_plot_cluster(optional_title, m_path, fname, seed, size):
-	cluster = gen_cluster(seed, size)
-	plot_cluster(optional_title, m_path, fname, seed, cluster)
-# end def for gen_and_plot_cluster()
+# Define a function to plot a cluster's mass, and return it's fractal dimension
+def plot_cluster_mass(fit_upper_cutoff, optional_title, m_path, fname, seed, cluster = []):
+	if(debugging): print 'Beginning plot_cluster_mass()'
+
+	nbins = 10
+	counts = np.zeros(nbins)
+	r = np.zeros(nbins)
+
+	# Compute the mass/counts as a function of r for this cluster
+	for i in range(len(cluster)):
+		for j in range(1,nbins+1):
+			if cluster[i].r() < j*(R_start/nbins): counts[j-1] += 1
+
+	for i in range(1,nbins+1):
+		r[i-1] = i*(R_start/nbins)
+
+	# Create the ndarrays we can fit
+	fit_counts = []
+	fit_r = []
+
+	for i in range(len(r)):
+		if r[i] < fit_upper_cutoff:
+			fit_counts.append(counts[i])
+			fit_r.append(r[i])
+
+	fit_counts_ndarray = np.array(fit_counts)
+	fit_r_ndarray = np.array(fit_r)	
+
+	# Set up the figure and axes
+ 	fig = plt.figure('fig')
+	ax = fig.add_subplot(111)
+	ax.set_title(optional_title)
+	ax.set_xlabel('$r$')
+	ax.set_ylabel('$m(r)$')
 
 
-# Define a function to generate a R_start sized cluster and plot it
-def gen_large_cluster(optional_title, m_path, fname, seed):
-	if(debugging): print 'Beginning gen_large_cluster()'
+	# Save handles for legend
+	legend_handles = []
 
-	random.seed(seed)
+	# Plot the data
+	data_points = ax.scatter(r, counts, marker='o', label='$m(r)$', c='blue')
+	legend_handles.append(data_points)
 
-	# Set up the cluster with the seed at (0,0)
-	cluster = []
-	cluster.append(cluster_point(-1, cluster))
-	cluster[0].x = 0.0
-	cluster[0].y = 0.0
-	cluster[0].fixed = True
+	# Make the plot log log
+	ax.set_xscale('log')
+	ax.set_yscale('log')
 
-	# keep adding points until one is 'near' R_start
-	# r_large = R_start - math.sqrt( Dx**2 + Dy**2 )
-	# if(debugging): print 'r_large = %f' % r_large
+	# Fitting 
+	########################################################
 
-	# keep adding points until one is on or beyond R_start
-	# count points within different R
-	i = 0
-	R_count = [20,40,60,80,100] 
-	count = [0,0,0,0,0]
-	while cluster[i].r() < R_start:
-		i += 1
-		cluster.append(new_cluster_point(i-1, cluster))
-		if cluster[i].r() < R_count[0]: count[0] += 1
-		if cluster[i].r() < R_count[1]: count[1] += 1
-		if cluster[i].r() < R_count[2]: count[2] += 1
-		if cluster[i].r() < R_count[3]: count[3] += 1
-	count[4] = i
+	########################################################
+	# Define the fit function
+	def fit_function(n_data, pow_fit, slope_fit):
+		return slope_fit*pow(n_data, pow_fit)
+	# end def fit_function
 
-	if(debugging): print 'large cluster generated!!'
-	
-	#calculate the fractal dimentsion for one large cluster 
-	R_count = np.array(R_count)
-	count = np.array(count)
-	log_r = np.log(R_count)
-	log_m = np.log(count)
-	fit = np.polyfit(log_r, log_m, 1)
-	d_f = fit[0]
-	print '\n The fractal dimension is %.2f \n' % d_f
+	# actually perform the fits
+	# op_par = optimal parameters, covar_matrix has covariance but no errors on plot so it's incorrect...
+	m_p0 = [1.65, 1.0]
+	fit_status = True
+	maxfev=m_maxfev = 2000
 
-	#check the fitting plot for d_f
-	#fit_fn = np.poly1d(fit)
-	#plt.figure(0)
-	#plt.plot(log_r, log_m, 'or',log_r, fit_fn(log_r),'-')
-	#plt.show()
-	
-	if(part_c): d_f_vals.append(d_f)
-	
-	plot_cluster(optional_title, m_path, fname, seed, cluster)
+	try:
+		op_par, covar_matrix = curve_fit(fit_function, fit_r_ndarray, fit_counts_ndarray, p0=m_p0, maxfev=m_maxfev)
+	except RuntimeError:
+		print sys.exc_info()[1]
+		print 'curve_fit failed, continuing...'
+		fit_status = False
 
-	if(debugging): print 'gen_large_cluster() completed!!!'	
-# end def for gen_large_cluster()
+	fit_text = 'Fit Function: $m(r) = b r^{d_{f}}$'
+
+	# plot and annotate the fit
+	if(fit_status):
+		fit_line, = ax.plot(r, fit_function(r, *op_par), ls='solid', label='Fit', c='black')
+		legend_handles.append(fit_line)
+
+		fit_upper_cutoff_line = ax.axvline(x=fit_upper_cutoff, ls = 'dotted', label='Fit Cut Off', c='darkmagenta ')
+		legend_handles.append(fit_upper_cutoff_line)
+
+		fit_text += '\n$d_{f\,\mathrm{Fit}} =$ %.5f' % (op_par[0])
+		fit_text += '\n$b_{\mathrm{Fit}} =$ %.5f' % (op_par[1])
+	else:
+		fit_text += '\nFit Failed'
+
+	ax.text(0.025, 0.885, fit_text, bbox=dict(edgecolor='black', facecolor='white', fill=False), size='x-small', transform=ax.transAxes)
+
+	# Draw the expectation line
+	expecation_line, = ax.plot(r, fit_function(r, *m_p0), ls='dashed', label='Expected', c='grey')
+	legend_handles.append(expecation_line)
+
+
+	'''
+	# adjust axis range TODO
+	x1_auto,x2_auto,y1_auto,y2_auto = ax.axis()
+	ax.set_xlim(
+	ax.set_ylim(
+	'''
+
+	# draw legend
+ 	ax.legend(handles=legend_handles, bbox_to_anchor=(0.98, 0.98), borderaxespad=0, loc='upper right', fontsize='x-small')
+
+	# Annotate
+	ann_text = 'RNG Seed = %d\n$N =$ %d' % (seed, len(cluster))
+	ann_text += '\n$\Delta x =$ %.1f, $\Delta y =$ %.1f' % (Dx, Dy)
+	ann_text += '\n$R_{\mathrm{Start}} =$ %.1f' % (R_start)
+	ann_text += '\n$d_{\mathrm{Kill}} =$ %.1f\n$t_{\mathrm{Kill}} =$ %G' % (d_kill, step_kill)
+
+	ax.text(0.79, 0.06, ann_text, bbox=dict(edgecolor='black', facecolor='white', fill=False), size='x-small', transform=ax.transAxes)
+
+	# Print it out
+	make_path(m_path)
+	# fig.savefig(m_path+'/'+fname+'.png', dpi=900)
+	# if len(cluster) < 10**3: fig.savefig(m_path+'/'+fname+'.pdf')
+	fig.savefig(m_path+'/'+fname+'.pdf')
+
+	fig.clf() # Clear fig for reuse
+
+	if(debugging): print 'plot_cluster_mass() completed!!!'
+
+	return op_par[0]
+
+# end def for plot_cluster_mass()
+
+
+
+# Define a wrapper function to do everything for part c
+def part_c(fit_upper_cutoff, optional_title, m_path, fname, initial_seed):
+
+	d_f_vals = [] # fractal dimension array
+
+	for i in range(initial_seed,initial_seed+10):
+
+		if (debugging): print '\n \t Seed #%d begins\n' % (i)
+
+		cluster = gen_cluster(i, -1)
+		plot_cluster(fit_upper_cutoff, optional_title, m_path, fname+'_seed_num_'+str(i), i, cluster)
+		d_f_vals.append(plot_cluster_mass(fit_upper_cutoff, optional_title, m_path, fname+'_mass_seed_num_'+str(i), i, cluster))
+
+	d_f_avr = np.sum(d_f_vals) / float(len(d_f_vals)) # average of d_f over all iterations
+	d_f_std = np.std(np.asarray(d_f_vals)) # standard deviation of d_f over all iterations
+
+	# print results of part c
+	print '\n\n================= part c ================='
+	print 'fractal dimensions array:'
+	print d_f_vals
+	print 'Averaged fractal dimension is %.2f' %d_f_avr 
+	print 'standard deviation is %.2f ' %d_f_std
+	print '=========================================='
+
+# end def for part_c()
 
 
 ########################################################
@@ -343,46 +448,19 @@ def gen_large_cluster(optional_title, m_path, fname, seed):
 ########################################################
 # Development Runs 
 
-#part a & b
-part_a_b = False
-if(part_a_b):
+if(True):
 	output_path = '../output/dev'
 	debugging = True
-	debugging2 = False
-	part_c = False
+	debugging2 = False	
 
-	# cluster1 = gen_cluster(7, 5)
-	# plot_cluster(' cluster1', output_path, 'cluster1', 7, cluster1)
+	i = 7
+	cluster = gen_cluster(i, -1)
+	plot_cluster(75, '', output_path, 'test_seed_num_'+str(i), i, cluster)
+	plot_cluster_mass(75, '', output_path, 'test_seed_num_'+str(i), i, cluster)
 
-	# gen_and_plot_cluster(optional_title, m_path, fname, seed, size)
-#	gen_and_plot_cluster('', output_path, 'test1', 7, 10)
 
-	# gen_large_cluster(optional_title, m_path, fname, seed)
-	gen_large_cluster('', output_path, 'test_large', 7)
+#	part_c(75, '', output_path, 'large_cluster', 7)
 
-#part c
-part_c = True
-if(part_c):
-	output_path = '../output/dev'
-	debugging = True
-	debugging2 = False
-	
-	d_f_vals = [] #fractal dimension array
-	iter = 10 #number of iterations 
-	for j in range(iter):
-		if (debugging): print '\n \t Iteration #%d begins\n' %(j+1)
-		gen_large_cluster('', output_path, 'test_large_'+str(j), j+1)
-		if (debugging): print '\n \t Iteration #%d ends\n' %(j+1)
-	d_f_avr = np.sum(d_f_vals) / float(len(d_f_vals)) #average of d_f over all iterations
-	d_f_std = np.std(np.asarray(d_f_vals)) #standard deviation of d_f over all iterations
-
-	#print results of part c
-	print '================= part c ================='
-	print fractal dimensions array:
-	print d_f_vals
-	print 'Averaged fractal dimension is %.2f' %d_f_avr 
-	print 'standard deviation is %.2f ' %d_f_std
-	print '=========================================='
 
 
 ########################################################
@@ -394,20 +472,8 @@ if(False):
 	debugging = False
 	debugging2 = False
 
-	# Part a
-	########################################################
-	print '\nPart a:'
- 	output_path = top_output_path+'/part_a'
- 
-	# TODO
-
-	# Part b
- 	########################################################
- 	print '\nPart b:'
- 	output_path = top_output_path+'/part_b'
 
 	# TODO
-
 
 
 ########################################################
