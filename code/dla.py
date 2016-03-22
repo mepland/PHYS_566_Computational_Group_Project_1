@@ -292,7 +292,7 @@ def plot_cluster(fit_upper_cutoff, optional_title, m_path, fname, seed, cluster 
 def plot_cluster_mass(fit_upper_cutoff, optional_title, m_path, fname, seed, cluster = []):
 	if(debugging): print 'Beginning plot_cluster_mass()'
 
-	nbins = 10
+	nbins = 20
 	counts = np.zeros(nbins)
 	r = np.zeros(nbins)
 
