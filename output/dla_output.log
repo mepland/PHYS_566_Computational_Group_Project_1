@@ -1,0 +1,31 @@
+
+Beginning dla.py
+
+Fixed Parameters are:
+---------------------------------------------
+
+Random Walker Starting Radius R_start = 100.0 
+
+Lattice Delta x = 3.0
+Lattice Delta y = 3.0
+Starting Lattice L x = 300.0
+Starting Lattice L y = 300.0
+
+Random Walker Kill Distance, d_kill = 120.0
+Random Walker Kill Step, step_kill = 10000
+
+---------------------------------------------
+---------------------------------------------
+
+
+
+================= part c =================
+fractal dimensions array:
+[1.3112325058618015, 1.3270590754808864, 1.384606605028273, 1.3885487858720118, 1.0594790706674777, 1.3004414477604089, 1.3438438530490715, 1.2603619712621312, 1.2181093788494546, 1.1931280004040039]
+Averaged fractal dimension is 1.28
+standard deviation is 0.10 
+==========================================
+
+
+Done!
+
