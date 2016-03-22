@@ -261,9 +261,10 @@ def plot_cluster(fit_upper_cutoff, optional_title, m_path, fname, seed, cluster 
 	legend_handles.append(mlines.Line2D([], [], ls='dashed', color='grey', label='$R_{\mathrm{Start}}$'))
 
 	# make a circle on the fit upper cutoff
-	fit_upper_cutoff_circle = plt.Circle((0,0), fit_upper_cutoff, ls='dotted', color='darkmagenta', fill=False, label='$m(r)$ Fit Cut Off')
-	ax.add_artist(fit_upper_cutoff_circle)
-	legend_handles.append(mlines.Line2D([], [], ls='dotted', color='darkmagenta', label='$m(r)$ Fit Cut Off'))
+	if fit_upper_cutoff < R_start:
+		fit_upper_cutoff_circle = plt.Circle((0,0), fit_upper_cutoff, ls='dotted', color='darkmagenta', fill=False, label='$m(r)$ Fit Cut Off')
+		ax.add_artist(fit_upper_cutoff_circle)
+		legend_handles.append(mlines.Line2D([], [], ls='dotted', color='darkmagenta', label='$m(r)$ Fit Cut Off'))
 
 	# draw legend
  	ax.legend(handles=legend_handles, bbox_to_anchor=(1.03, 1), borderaxespad=0, loc='upper left', fontsize='x-small')
@@ -274,7 +275,7 @@ def plot_cluster(fit_upper_cutoff, optional_title, m_path, fname, seed, cluster 
 	ann_text += '\n$R_{\mathrm{Start}} =$ %.1f' % (R_start)
 	ann_text += '\n$d_{\mathrm{Kill}} =$ %.1f\n$t_{\mathrm{Kill}} =$ %G' % (d_kill, step_kill)
 
-	ax.text(1.0415, 0.7, ann_text, bbox=dict(edgecolor='black', facecolor='white', fill=False), size='x-small', transform=ax.transAxes)
+	ax.text(1.0415, 0.65, ann_text, bbox=dict(edgecolor='black', facecolor='white', fill=False), size='x-small', transform=ax.transAxes)
 
 	# Print it out
 	make_path(m_path)
@@ -363,19 +364,24 @@ def plot_cluster_mass(fit_upper_cutoff, optional_title, m_path, fname, seed, clu
 		fit_line, = ax.plot(r, fit_function(r, *op_par), ls='solid', label='Fit', c='black')
 		legend_handles.append(fit_line)
 
-		fit_upper_cutoff_line = ax.axvline(x=fit_upper_cutoff, ls = 'dotted', label='Fit Cut Off', c='darkmagenta ')
-		legend_handles.append(fit_upper_cutoff_line)
+		if fit_upper_cutoff < R_start:
+			fit_upper_cutoff_line = ax.axvline(x=fit_upper_cutoff, ls = 'dotted', label='Fit Cut Off', c='darkmagenta')
+			legend_handles.append(fit_upper_cutoff_line)
 
 		fit_text += '\n$d_{f\,\mathrm{Fit}} =$ %.5f' % (op_par[0])
 		fit_text += '\n$b_{\mathrm{Fit}} =$ %.5f' % (op_par[1])
+
 	else:
 		fit_text += '\nFit Failed'
 
-	ax.text(0.025, 0.885, fit_text, bbox=dict(edgecolor='black', facecolor='white', fill=False), size='x-small', transform=ax.transAxes)
+	if fit_upper_cutoff < R_start:
+		fit_text += '\nFit Cut Off = %.1f' % (fit_upper_cutoff)
+
+	ax.text(0.025, 0.865, fit_text, bbox=dict(edgecolor='black', facecolor='white', fill=False), size='x-small', transform=ax.transAxes)
 
 	# Draw the expectation line
-	expecation_line, = ax.plot(r, fit_function(r, *m_p0), ls='dashed', label='Expected', c='grey')
-	legend_handles.append(expecation_line)
+	# expecation_line, = ax.plot(r, fit_function(r, *m_p0), ls='dashed', label='Expected', c='grey')
+	# legend_handles.append(expecation_line)
 
 
 	'''
@@ -394,7 +400,7 @@ def plot_cluster_mass(fit_upper_cutoff, optional_title, m_path, fname, seed, clu
 	ann_text += '\n$R_{\mathrm{Start}} =$ %.1f' % (R_start)
 	ann_text += '\n$d_{\mathrm{Kill}} =$ %.1f\n$t_{\mathrm{Kill}} =$ %G' % (d_kill, step_kill)
 
-	ax.text(0.79, 0.06, ann_text, bbox=dict(edgecolor='black', facecolor='white', fill=False), size='x-small', transform=ax.transAxes)
+	ax.text(0.795, 0.04, ann_text, bbox=dict(edgecolor='black', facecolor='white', fill=False), size='x-small', transform=ax.transAxes)
 
 	# Print it out
 	make_path(m_path)
@@ -448,7 +454,7 @@ def part_c(fit_upper_cutoff, optional_title, m_path, fname, initial_seed):
 ########################################################
 # Development Runs 
 
-if(True):
+if(False):
 	output_path = '../output/dev'
 	debugging = True
 	debugging2 = False	
@@ -456,24 +462,24 @@ if(True):
 	i = 7
 	cluster = gen_cluster(i, -1)
 	plot_cluster(75, '', output_path, 'test_seed_num_'+str(i), i, cluster)
-	plot_cluster_mass(75, '', output_path, 'test_seed_num_'+str(i), i, cluster)
+	plot_cluster_mass(75, '', output_path, 'test_mass_seed_num_'+str(i), i, cluster)
 
-
-#	part_c(75, '', output_path, 'large_cluster', 7)
-
+	# part_c(75, '', output_path, 'large_cluster', 7)
 
 
 ########################################################
 ########################################################
 # Production Runs for paper 
 
-if(False):
-	top_output_path = '../output/plots_for_paper/problem_3'
+if(True):
+	output_path = '../output/plots_for_paper/problem_3'
 	debugging = False
 	debugging2 = False
 
+	very_large_cluster = gen_cluster(6, 500)
+	plot_cluster(1.1*R_start, '', output_path, 'very_large_cluster', 6, very_large_cluster)
 
-	# TODO
+	part_c(75, '', output_path, 'large_cluster', 6)
 
 
 ########################################################
