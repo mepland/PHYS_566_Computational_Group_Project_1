@@ -276,7 +276,7 @@ If we are given the initial distribution of the cream particles, $\rho(x, t=0)$,
 	\rho(x, t) = \frac{1}{\sigma}e^{-\frac{x^{2}}{2\sigma^{2}}},
 \end{equation}
 where $\sigma$ is time-dependent, with $\sigma = \sqrt{2Dt}$. To guarantee numerical stability we must make sure that the space and time steps satisfy
-\begin{equation}
+\begin{equation} \label{eq:2_4}
 	\Delta t \leq (\Delta x)^{2}/(2D).
 \end{equation}
 
@@ -350,21 +350,25 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 \end{figure}
 
 \begin{center}
-	\begin{tabular}{ | p{2cm} | p{2cm} | p{2cm} | p{2cm} | p{2cm} |}
-		\hline
-		Steps & Time & $\sigma(t) = \sqrt{2Dt}$ & $\sigma_{\mathrm{fit}}(t)$ & Percent error\\
-		\hline
-		300  & 0.03 & 0.346410 & 0.362748 & 4.716236\%\\
-		\hline
-		600  & 0.60 & 0.489898 & 0.511874 & 4.485857\%\\ 
-		\hline
-		1200 & 1.20 & 0.692820 & 0.723106 & 4.371316\%\\
-		\hline
-		2400 & 2.40 & 0.979796 & 0.102207 & 4.314208\%\\
-		\hline
-		4800 & 4.80 & 0.138564 & 0.144493 & 4.278783\%\\
-		\hline
-	\end{tabular}
+	\begin{table}[!htbc]
+		\begin{tabular}{ | p{2cm} | p{2cm} | p{2cm} | p{2cm} | p{2cm} |}
+			\hline
+			Steps & Time & $\sigma(t) = \sqrt{2Dt}$ & $\sigma_{\mathrm{fit}}(t)$ & Percent error\\
+			\hline
+			300  & 0.03 & 0.346410 & 0.362748 & 4.716236\%\\
+			\hline
+			600  & 0.60 & 0.489898 & 0.511874 & 4.485857\%\\ 
+			\hline
+			1200 & 1.20 & 0.692820 & 0.723106 & 4.371316\%\\
+			\hline
+			2400 & 2.40 & 0.979796 & 0.102207 & 4.314208\%\\
+			\hline
+			4800 & 4.80 & 0.138564 & 0.144493 & 4.278783\%\\
+			\hline
+		\end{tabular}
+		\caption{Theoretical data and fitting data}
+		\label{table:prob_2}
+	\end{table}
 \end{center}
 
 \clearpage
@@ -375,6 +379,13 @@ TODO
 \clearpage
 \section{Conclusions}
 \label{sec:Conclusions}
+\subsection{2D Random Walk}
+TODO
+
+\subsection{Diffusion Equation}
+As can be seen from the Fig.~\eqref{fig:2}, the numerical solutions coincide well with the analytic solutions. This figure also shows the evolution of a Gaussian pulse which gradually decreases in height and broadens in width. Table.~\eqref{table:prob_2} shows that $\sigma(t) = \sqrt{2Dt}$ and the percent error is around $4.5\%$. We can reduce the error by increasing the size of the boundary and decreasing the step size. Since the step size is limited by Eqn.~\eqref{eq:2_4}, it will be very time-consuming if we use smaller step size. 
+
+\subsection{Cluster Growth with the DLA Model}
 TODO
 
 The Python source code used to produce these results can be found online at \url{http://github.com/mepland/PHYS_566_Computational_Group_Project_1}, and is included in Section~\ref{sec:code}.
