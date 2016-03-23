@@ -476,8 +476,8 @@ if(True):
 	debugging = False
 	debugging2 = False
 
-	very_large_cluster = gen_cluster(6, 500)
-	plot_cluster(1.1*R_start, '', output_path, 'very_large_cluster', 6, very_large_cluster)
+	# very_large_cluster = gen_cluster(6, 500)
+	# plot_cluster(1.1*R_start, '', output_path, 'very_large_cluster', 6, very_large_cluster)
 
 	part_c(75, '', output_path, 'large_cluster', 6)
 
