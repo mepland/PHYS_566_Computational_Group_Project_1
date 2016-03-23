@@ -145,11 +145,19 @@ TODO
 \section{Introduction}
 \label{sec:intro}
 \subsection{2D Random Walk}
-\noindent This problem simulates a random walk in two dimensions. This problem has two parts. \newline
+This problem simulates a random walk in two dimensions. This problem has two parts. 
 
-\noindent In the first part, a random walker takes unit steps in the positive and negative x and y directions. The random walks are 100 steps and averaged over $10^4$ random walks. The mean distance and the mean distance squared in the x-direction are both plotted. \newline
+In the first part, a random walker takes unit steps in the positive and negative x and y directions. The random walks are 100 steps and averaged over $10^4$ random walks. The mean distance and the mean distance squared in the x-direction are both plotted. 
 
-\noindent In the second part, a line is fitted to the mean distance squared data, which takes into account the movement of the walker in both the x and y directions. The fit and mean distance squared data are plotted on the same graph. From the fitted line, the diffusion coefficient is determined.
+In the second part, a line is fitted to the mean distance squared data, which takes into account the movement of the walker in both the x and y directions. The fit and mean distance squared data are plotted on the same graph. From the fitted line, the diffusion coefficient is determined.
+
+\subsection{Diffusion Equation}
+In the first part, we use analytic method to calculate the spatial expectation value $\expval{x^{2}(t)}$ of the 1D Normal Distribution,
+\begin{equation}
+	\rho(x,t) = \frac{1}{\sqrt{2\pi\sigma^{2}(t)}}\exp(-\frac{x^{2}}{2\sigma^{2}(t)}).
+\end{equation}
+
+In the second part, we use numerical methods to solve the 1D diffusion equation with a diffusion constant $D = 2$ and initially peaking around $x = 0$. Then we perform a fit for 5 different time snapshots to verify that $\sigma(t) = \sqrt{2Dt}$.
 
 \section{Theory}
 \label{sec:theory}
@@ -158,9 +166,9 @@ TODO
 
 \subsubsection{Part A}
 
-\noindent At the core of this problem is using the random number generator. As shown below, two for loops are used where the outer for loop is for the number of random walks while the inner for loop is for the number of steps in a single random walk. \newline
+At the core of this problem is using the random number generator. As shown below, two for loops are used where the outer for loop is for the number of random walks while the inner for loop is for the number of steps in a single random walk. 
 
-\noindent After initializing the position of the walker, a random number is generated and then depending on the value, the random walker moves up, down, left, or right. After each iteration, xAve, x2ave, an dist2 are updated. xAve is the horizontal position of the walker in the x-direction. x2ave is the squared horizontal position of the walker in the x-direction. dist2 is the squared position of the walker taking both the horizontal and vertical movements into account. \newline
+After initializing the position of the walker, a random number is generated and then depending on the value, the random walker moves up, down, left, or right. After each iteration, xAve, x2ave, an dist2 are updated. xAve is the horizontal position of the walker in the x-direction. x2ave is the squared horizontal position of the walker in the x-direction. dist2 is the squared position of the walker taking both the horizontal and vertical movements into account. 
  
 
 {\tt 	
@@ -182,7 +190,7 @@ TODO
 \indent	\indent	dist2[i] += x ** 2 + y ** 2             \newline
 		}
 
-\noindent After the looping has ended, the averages of xAve, x2ave, an dist2 are found by dividing by the number of random walks m. Then, only a portion of these values are taken because problem asks for values of steps n that are greater than 3 up until 100. This is shown below. \newline 
+After the looping has ended, the averages of xAve, x2ave, an dist2 are found by dividing by the number of random walks m. Then, only a portion of these values are taken because problem asks for values of steps n that are greater than 3 up until 100. This is shown below. \newline 
 
 {\tt 
 \noindent xAve /= m                   \newline
@@ -196,7 +204,7 @@ TODO
 
 \subsubsection{Part B}
 
-\noindent In this part, a line is fitted to the dist2 data. The code for fitting this line is shown below. \newline
+In this part, a line is fitted to the dist2 data. The code for fitting this line is shown below. \newline
 
 {\tt 
 	\noindent steps=np.arange(4, n + 1, 1)                   \newline    
@@ -209,23 +217,23 @@ TODO
 	\noindent eqSteps=eq(steps)   }                          \newline
 
 
-\noindent Steps is the number of time steps that are used. The polyfit function of degree 1 gives a linear approximation. The coefficients of polyfit are the slope and y-intercept of the line and coefficients[0] gives the slope. \newline
+Steps is the number of time steps that are used. The polyfit function of degree 1 gives a linear approximation. The coefficients of polyfit are the slope and y-intercept of the line and coefficients[0] gives the slope. 
 
-\noindent The diffusion coefficient can be found from:
+The diffusion coefficient can be found from:
 
 \begin{equation}
-\expval{d^{2}}=2Dt
+	\expval{d^{2}}=2Dt
 \end{equation}
 
-\noindent where $\expval{d^{2}}$ is the mean distance squared, $D$ is the diffusion coefficient, and $t$ is the time or step number. The diffusion coefficient can be found by dividing the slope by 2. The slope equals $\expval{d^{2}}/t$.\newline
+where $\expval{d^{2}}$ is the mean distance squared, $D$ is the diffusion coefficient, and $t$ is the time or step number. The diffusion coefficient can be found by dividing the slope by 2. The slope equals $\expval{d^{2}}/t$.
 
-\noindent Using the poly1d function a symbolic equation for the fitted line can be obtained as shown:
+Using the poly1d function a symbolic equation for the fitted line can be obtained as shown:
 
 \begin{equation}
 y=mx+b
 \end{equation}
 
-\noindent where the slope $m$ and the y-intercept $b$ are known from the polyfit and steps can be plugged in for $x$.  Using eq(steps) steps is plugged in for x, where eq is the equation obtained using the poly1d function. \newline
+where the slope $m$ and the y-intercept $b$ are known from the polyfit and steps can be plugged in for $x$.  Using eq(steps) steps is plugged in for x, where eq is the equation obtained using the poly1d function. 
 
 \subsection{Random Walk and Diffusion}
 \label{subsec:theory_2}
@@ -320,7 +328,7 @@ We derive the spatial expectation values $\expval{x^{2}(t)}$ as follows,
 \end{align}
 Now we use the Gaussian integral that
 \begin{equation}
-	\int_{0}^{+\infty} x^{2n} \exp{-x^{2}/a^{2}} dx = \sqrt{\pi} \frac{(2n)!}{n!}\Big( \frac{a}{2} \Big)^{2n+1}.
+	\int_{0}^{+\infty} x^{2n} \exp(-x^{2}/a^{2}) dx = \sqrt{\pi} \frac{(2n)!}{n!}\Big( \frac{a}{2} \Big)^{2n+1}.
 \end{equation}
 Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 \begin{equation}

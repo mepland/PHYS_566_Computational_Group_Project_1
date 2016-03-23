@@ -19,7 +19,7 @@
 %\usepackage{pdfpages}
 \usepackage{setspace}
 \usepackage{verbatim}
-
+\usepackage{physics}
 %\usepackage{siunitx}
 
 \DeclareRobustCommand{\orderof}{\ensuremath{\mathcal{O}}}
@@ -130,6 +130,133 @@
 
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Problem 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+	\frametitle{Random Walk and Diffusion}
+	Suppose $P(i, j, k, n)$ is the probability to find the particle at $(x, y, z)$ at time $t$, then we can get
+\begin{equation}
+	\scriptsize
+	\begin{split}
+		P(i, j, k) = \frac{1}{6}[&P(i, j, k, n-1) + P(i-1, j, k, n-1) + P(i, j+1, k, n-1) +\\ &P(i, j-1, k, n-1) + P(i, j, k+1, n-1) + P(i, j, k-1, n-1)].
+	\end{split}
+\end{equation}
+Rearrange this equation and take the continuum limit,
+\begin{equation}
+	\frac{\partial P(x, y, z, t)}{\partial t} = D\nabla^{2}P(x,y,z,t),
+\end{equation}
+where $D = (1/6)(\Delta x)^{2} / \Delta t$. 
+\end{frame}
+
+\begin{frame}
+	\frametitle{Diffusion Equation}
+	Suppose the density $\rho$ obeys the diffusion equation,
+	\begin{equation}
+		\frac{\partial \rho}{\partial t} = D\nabla^{2}\rho.
+	\end{equation}
+	In one dimension, we have
+	\begin{equation}
+		\frac{\partial\rho}{\partial t} = D\frac{\partial^{2}\rho}{\partial x^{2}}.
+	\end{equation}
+	One special solution is
+	\begin{equation}
+		\rho(x, t) = \frac{1}{\sigma}e^{-\frac{x^{2}}{2\sigma^{2}}},
+	\end{equation} 
+	where $\sigma$ is time-dependent, with $\sigma = \sqrt{2Dt}$. 
+\end{frame}
+
+\begin{frame}
+	\frametitle{$\expval{x^{2}(t)}$ of 1D Normal Distribution}
+	The formula for computing the expectation value is given by
+	\begin{align}
+	\expval{x^{2}(t)} &= \int_{-\infty}^{+\infty} \rho(x, t) x^{2} dx, \\
+	\expval{x^{2}(t)} &= \frac{2}{\sqrt{2\pi\sigma^{2}(t)}} \int_{0}^{+\infty} x^{2} \exp(-\frac{x^{2}}{2\sigma^{2}(t)}).
+\end{align}
+Now we use the Gaussian integral that
+\begin{equation}
+	\int_{0}^{+\infty} x^{2n} \exp(-x^{2}/a^{2}) dx = \sqrt{\pi} \frac{(2n)!}{n!}\Big( \frac{a}{2} \Big)^{2n+1}.
+\end{equation}
+Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
+\begin{equation}
+	\begin{split}
+		\expval{x^{2}(t)} &= \frac{2}{\sqrt{2\pi\sigma^{2}(t)}} \cdot \sqrt{\pi}\cdot \frac{2!}{1!} \cdot \Big( \frac{\sqrt{2}\sigma(t)}{2} \Big)^{3} \\
+		&= \sigma^{2}(t).
+	\end{split} 
+\end{equation}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Numerical Methods}
+	\begin{itemize}
+		\item Set spatial and time step size
+		\begin{itemize}
+		\item
+		$\Delta x = 0.05, \Delta t = 10^{-4}, D = 2$ which satisfy $\Delta t \leq (\Delta x)^{2}/(2D)$
+		\end{itemize}
+		\item Set boundary conditions
+	    \begin{itemize}
+	    \item
+	    	$\rho(-5) = \rho(5) = 0$
+	    \end{itemize}
+	    \item Set initial conditions
+	    \begin{itemize}
+	    	\item $\rho(x) = \begin{cases}
+	    	1/3 & x = -\Delta x, 0, \Delta x \\
+	    	0 & \mathrm{others}\\
+	    	\end{cases}$
+	    \end{itemize}
+	    \item Loop over time steps and spatial steps
+	    \begin{itemize}
+	    	\item {
+	    	\tt
+	    	for i in range(t\_max): \\
+	    	\qquad for j in range(size):\\
+	    	\qquad \qquad $\rho$[j] += D*dt*($\rho$[j+1] - 2*$\rho$[j] + $\rho$[j-1])/dx$^{2}$
+	    	}
+	    \end{itemize}
+	    \item Perform a fit for 5 different time snapshots time snapshots
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Snapshots}
+	\begin{figure}
+  	\centering
+  	\includegraphics[width=0.85\textwidth]{../output/plots_for_paper/problem_2/part_b.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Verification}
+	\begin{center}
+	\begin{tabular}{ | p{1.5cm} | p{1.5cm} | p{2.5cm} | p{2cm} | p{2.5cm} |}
+		\hline
+		Steps & Time & $\sigma(t) = \sqrt{2Dt}$ & $\sigma_{\mathrm{fit}}(t)$ & Percent error\\
+		\hline
+		300  & 0.03 & 0.346410 & 0.362748 & 4.716236\%\\
+		\hline
+		600  & 0.60 & 0.489898 & 0.511874 & 4.485857\%\\ 
+		\hline
+		1200 & 1.20 & 0.692820 & 0.723106 & 4.371316\%\\
+		\hline
+		2400 & 2.40 & 0.979796 & 0.102207 & 4.314208\%\\
+		\hline
+		4800 & 4.80 & 0.138564 & 0.144493 & 4.278783\%\\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{itemize}
+	\item $\sigma(t) = \sqrt{2Dt}$
+	\item $\expval{r^{2}} \propto t$
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}
   \frametitle{DLA Cluster: RNG Seed $= 6$}
 \begin{figure}
@@ -196,10 +323,7 @@
 \end{frame}
 
 
-
-
 \end{document}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Backup
