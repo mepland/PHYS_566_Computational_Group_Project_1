@@ -144,10 +144,10 @@ class cluster_point:
 		elif cluster[i].x == self.x - Dx and cluster[i].y == self.y: touch = True # left
 		elif cluster[i].x == self.x and cluster[i].y == self.y - Dy: touch = True # bottom
 
-		elif cluster[i].x == self.x + Dx and cluster[i].y == self.y + Dy: touch = True # top right corner
-		elif cluster[i].x == self.x - Dx and cluster[i].y == self.y + Dy: touch = True # top left corner
-		elif cluster[i].x == self.x - Dx and cluster[i].y == self.y - Dy: touch = True # bottom left corner
-		elif cluster[i].x == self.x + Dx and cluster[i].y == self.y - Dy: touch = True # bottom right corner
+#		elif cluster[i].x == self.x + Dx and cluster[i].y == self.y + Dy: touch = True # top right corner
+#		elif cluster[i].x == self.x - Dx and cluster[i].y == self.y + Dy: touch = True # top left corner
+#		elif cluster[i].x == self.x - Dx and cluster[i].y == self.y - Dy: touch = True # bottom left corner
+#		elif cluster[i].x == self.x + Dx and cluster[i].y == self.y - Dy: touch = True # bottom right corner
 
 	return touch
     # end def for touching()
@@ -479,7 +479,7 @@ if(True):
 	# very_large_cluster = gen_cluster(6, 500)
 	# plot_cluster(1.1*R_start, '', output_path, 'very_large_cluster', 6, very_large_cluster)
 
-	part_c(75, '', output_path, 'large_cluster', 6)
+	part_c(50, '', output_path, 'large_cluster', 6)
 
 
 ########################################################
