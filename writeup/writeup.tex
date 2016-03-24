@@ -14,6 +14,7 @@
 %\usepackage[absolute,overlay]{textpos}
 \usepackage[usenames, dvipsnames]{color}
 \usepackage{graphicx}
+\usepackage{subfigure}
 \usepackage{listings}
 \usepackage{epsfig}
 \usepackage{hyperref}
@@ -160,6 +161,9 @@ In the first part, we use analytic method to calculate the spatial expectation v
 
 In the second part, we use numerical methods to solve the 1D diffusion equation with a diffusion constant $D = 2$ and initially peaking around $x = 0$. Then we perform a fit for 5 different time snapshots to verify that $\sigma(t) = \sqrt{2Dt}$.
 
+\subsection{Cluster Growth with the DLA Model}
+We generate 2D clusters of radius 100 using the Diffusion Limited Aggregation (DLA) Model and extract the fractal dimensionality by fitting the log-log plots of the cluster mass and the radius. We repeat the cluster growth procedure for 10 times with different random number generator seeds to improve the accuracy of the fractal dimensionality extraction. Several representative samples and the corresponding fitting plots are shown and the results are discussed. 
+
 \section{Theory}
 \label{sec:theory}
 \subsection{2D Random Walk}
@@ -283,12 +287,19 @@ where $\sigma$ is time-dependent, with $\sigma = \sqrt{2Dt}$. To guarantee numer
 
 \subsection{Diffusion Limited Aggregation Model}
 \label{subsec:theory_3}
-Random walks can also be used to create clustering algorithms, such as the Diffusion Limited Aggregation Model (DLA). The DLA model works by generating a random walker at a random position far away from an initial seed, then letting the random walker walk until it touches the seed. At this point the walker, together with the seed, is considered part of the cluster and the process is repeated for a new random walker.
+Random walks can also be used to create clustering algorithms, such as the Diffusion Limited Aggregation (DLA) Model. The DLA model works by generating a random walker at a random position far away from an initial seed, then letting the random walker walk until it touches the seed. At this point the walker, together with the seed, is considered part of the cluster and the process is repeated for a new random walker.
 
-In our implementation one initial seed at the origin was used and the random walkers were generated from a uniform $\theta$ distribution on a circle of radius $R = 100$. The space was discretized into a lattice with side lengths $\Delta x = \Delta y = 3$. The walkers ran until they met one of three halting conditions; 1) they contacted an existing cluster point and formed a new cluster point, 2) they traveled to far away from the cluster, specifically when $\mathrm{min}\left|\mathbf{r}_{\mathrm{Cluster\,Point}} - \mathbf{r}_{\mathrm{Walker}}\right| = d_{\mathrm{min}} > d_{\mathrm{Kill}} = 120$, or 3) they walked for too many steps, $t > t_{\mathrm{Kill}} = 10^{4}$.
+In our implementation one initial seed at the origin was used and the random walkers were generated from a uniform $\theta$ distribution on a circle of radius $R = 100$. The space was discretized into a lattice with side lengths $\Delta x = \Delta y = 3$. The walkers ran until they met one of three halting conditions; 1) they contacted an existing cluster point and formed a new cluster point, 2) they traveled too far away from the cluster, specifically when $\mathrm{min}\left|\mathbf{r}_{\mathrm{Cluster\,Point}} - \mathbf{r}_{\mathrm{Walker}}\right| = d_{\mathrm{min}} > d_{\mathrm{Kill}} = 120$, or 3) they walked for too many steps, $t > t_{\mathrm{Kill}} = 10^{4}$.
 
-The clusters formed by the DLA method are typically sparse and irregular; almost fractal in shape. As such we can attempt to describe them by computing their fractal dimension
-TODO
+The clusters formed by the DLA method are typically sparse and irregular; almost fractal in shape. As such we can attempt to describe them by computing their effective or fractal dimensionality $d_f$, which is defined as
+\begin{equation}
+m(r)\sim r^{d_f}
+\end{equation}
+where $m(r)$ is the mass of the cluster inside a circle of radius $r$. Taking the logarithm of both sides gives
+\begin{equation}
+\log m \sim d_f \log r
+\end{equation}
+which means that the slope of a log-log plot of $m$ versus $r$ is exactly the fractal dimensionality.
 
 \clearpage
 \section{Results}
@@ -375,10 +386,49 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 \clearpage
 \subsection{Diffusion Limited Aggregation Model}
 \label{subsec:results_3}
-TODO
+\begin{figure}[!h]
+\centering
+\subfigure[DLA cluster]
+{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_6.pdf}}
+\subfigure[Fractal dimensionality extraction]
+{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_6.pdf}}
+\caption{DLA cluster representative sample I}
+\label{dla1}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\subfigure[DLA cluster]
+{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_8.pdf}}
+\subfigure[Fractal dimensionality extraction]
+{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_8.pdf}}
+\caption{DLA cluster representative sample II}
+\label{dla2}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\subfigure[DLA cluster]
+{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_11.pdf}}
+\subfigure[Fractal dimensionality extraction]
+{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_11.pdf}}
+\caption{DLA cluster representative sample III}
+\label{dla3}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\subfigure[DLA cluster]
+{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_14.pdf}}
+\subfigure[Fractal dimensionality extraction]
+{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_14.pdf}}
+\caption{DLA cluster representative sample IV}
+\label{dla4}
+\end{figure}
+
 
 \clearpage
-\section{Conclusions}
+\section{Discussion}
 \label{sec:Conclusions}
 \subsection{2D Random Walk}
 In Part A, as expected the distance traveled moves both in the positive and negative directions since the random walker moves both in the positive and negative directions.
@@ -389,18 +439,21 @@ In Part B, the results show that the relationship between distance traveled squa
 As can be seen from the Fig.~\eqref{fig:2}, the numerical solutions coincide well with the analytic solutions. This figure also shows the evolution of a Gaussian pulse which gradually decreases in height and broadens in width. Table.~\eqref{table:prob_2} shows that $\sigma(t) = \sqrt{2Dt}$ and the percent error is around $4.5\%$. We can reduce the error by increasing the size of the boundary and decreasing the step size. Since the step size is limited by Eqn.~\eqref{eq:2_4}, it will be very time-consuming if we use smaller step size. 
 
 \subsection{Cluster Growth with the DLA Model}
-TODO
+The graphs on the left hand side in Fig.\ref{dla1} - Fig.\ref{dla4} show 4 of the 10 cluster samples generated by the DLA model. The random walker starts from a random point on the dashed circle of radius 100. The seed is located at the origin and marked in green. The graphs on the right hand side plot $\log m$ versus $\log r$ and the fitting results for the fractal dimensionality. It is observed that the curves flatten out as $r$ gets larger. This is due to the finite size of the cluster. Thus we cut off the fitting at $r = R/2 = 50$ as is indicated by the dotted circles in the left graphs and the dotted vertical line in the right plots. 
 
-The Python source code used to produce these results can be found online at \url{http://github.com/mepland/PHYS_566_Computational_Group_Project_1}, and is included in Section~\ref{sec:code}.
+By repeating the cluster growth procedure for 10 times using different random number generator seeds, we improve the accuracy in the fractal dimensionality extraction and get the mean value of $d_f$ to be 1.66 with a standard deviation of 0.14 (see the output log in Section \ref{sec:Supporting_Material}), which is consistent with the value given in class.
+
+
 
 
 \clearpage
 \section{Supporting Material}
 \label{sec:Supporting_Material}
 
-\lstinputlisting[style=output,label={lst:output}]{../output/dla_output.log} % TODO insert the code's output, if it has useful information
+% insert the code's output, if it has useful information
+\lstinputlisting[style=output,label={lst:output}]{../output/dla_log_output.log} 
 
-
+The Python source code used to produce these results can be found online at \url{http://github.com/mepland/PHYS_566_Computational_Group_Project_1}, and is included in Section~\ref{sec:code}.
 \clearpage
 \includepdf[pages={1}]{../group_project1a.pdf}
 \includepdf[pages={2}]{../group_project1a.pdf}
