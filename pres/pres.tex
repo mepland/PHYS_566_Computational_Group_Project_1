@@ -145,7 +145,13 @@
 	\frametitle{Part A (1/3)}
 	{
 	\tt
-	\qquad n = 100     \\                                 	\qquad m = 10000.0   \\                             	~\\	\qquad x2ave=np.asarray([0.0]*n) \\                	\qquad y2ave=np.copy(x2ave)      \\                 	\qquad xAve=np.copy(x2ave)       \\                  	\qquad dist2=np.copy(x2ave)                        
+	\qquad n = 100     \\                                 
+	\qquad m = 10000.0   \\                             
+	~\\
+	\qquad x2ave=np.asarray([0.0]*n) \\                
+	\qquad y2ave=np.copy(x2ave)      \\                 
+	\qquad xAve=np.copy(x2ave)       \\                  
+	\qquad dist2=np.copy(x2ave)                        
 	}
 \end{frame}
 
@@ -153,7 +159,22 @@
 	\frametitle{Part A (2/3)}
 	{
 	\tt
-	\qquad for j in range(int(m)):   	\\    \qquad \qquad x = 0               	\\            \qquad \qquad y = 0               	\\        \qquad for i in range(n):    	 	\\    \qquad \qquad r = random.random() 	\\    \qquad \qquad if r <= 0.25:       	\\    \qquad \qquad \qquad x += 1     		\\    \qquad \qquad elif r <= 0.5:		 	\\    \qquad \qquad \qquad x -= 1			\\    \qquad \qquad elif r <= 0.75:		\\    \qquad \qquad \qquad y += 1	 		\\    \qquad \qquad else:				 	\\    \qquad \qquad \qquad y -= 1			\\    \qquad \qquad xAve[i] += x   		\\                             \qquad \qquad x2ave[i] += x ** 2    \\    \qquad \qquad dist2[i] += x ** 2 + y ** 2
+	\qquad for j in range(int(m)):   	\\
+    \qquad \qquad x = 0               	\\        
+    \qquad \qquad y = 0               	\\    
+    \qquad for i in range(n):    	 	\\
+    \qquad \qquad r = random.random() 	\\
+    \qquad \qquad if r <= 0.25:       	\\
+    \qquad \qquad \qquad x += 1     		\\
+    \qquad \qquad elif r <= 0.5:		 	\\
+    \qquad \qquad \qquad x -= 1			\\
+    \qquad \qquad elif r <= 0.75:		\\
+    \qquad \qquad \qquad y += 1	 		\\
+    \qquad \qquad else:				 	\\
+    \qquad \qquad \qquad y -= 1			\\
+    \qquad \qquad xAve[i] += x   		\\                         
+    \qquad \qquad x2ave[i] += x ** 2    \\
+    \qquad \qquad dist2[i] += x ** 2 + y ** 2
 	}
 \end{frame}
 
@@ -161,8 +182,13 @@
 	\frametitle{Part A (3/3)}
 	{
 	\tt
-	\qquad xAve /= m  				\\    \qquad x2ave /= m               	\\            \qquad dist2 /= m               	\\
-	~\\        \qquad distNew = dist2[3:100]   \\                     	\qquad xAveNew = xAve[3:100]  	\\                      	\qquad x2aveNew = x2ave[3:100]  \\                
+	\qquad xAve /= m  				\\
+    \qquad x2ave /= m               	\\        
+    \qquad dist2 /= m               	\\
+	~\\    
+    \qquad distNew = dist2[3:100]   \\                     
+	\qquad xAveNew = xAve[3:100]  	\\                      
+	\qquad x2aveNew = x2ave[3:100]  \\                
 	}	
 \end{frame}
 
@@ -170,7 +196,14 @@
 	\frametitle{Part B}
 	\tt
 	{
-	\qquad steps=np.arange(4, n + 1, 1)    \\               	~\\	\qquad coefficients=np.polyfit(steps, distNew, 1)   \\	\qquad slope=coefficients[0]                     	\qquad diffCoeff=slope/2                          	\\  	~\\	\qquad eq=np.poly1d(coefficients) \\          	\qquad eqSteps=eq(steps)    \\                
+	\qquad steps=np.arange(4, n + 1, 1)    \\               
+	~\\
+	\qquad coefficients=np.polyfit(steps, distNew, 1)   \\
+	\qquad slope=coefficients[0]                     
+	\qquad diffCoeff=slope/2                          	\\
+  	~\\
+	\qquad eq=np.poly1d(coefficients) \\          
+	\qquad eqSteps=eq(steps)    \\                
 	}
 \end{frame}
 
@@ -322,6 +355,27 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Problem 3: Introduction}
+  \begin{itemize}
+    \item Diffusion-limited aggregation (DLA) model
+    \begin{itemize}
+    	\item Seed located at the origin
+	\item Random walker released at random point on a circle of $R=100$
+	\item Halting conditions -- when the random walker
+	\begin{itemize}
+		\item contacted an existing cluster point $\Rightarrow$ form a new cluster point
+		\item traveled too far away from the cluster ($\mathrm{min}\left|\mathbf{r}_{\mathrm{Cluster\,Point}} - \mathbf{r}_{\mathrm{Walker}}\right|  > d_{\mathrm{Kill}} = 120$)
+		\item walked for too many steps ($t > t_{\mathrm{Kill}} = 10^{4}$)
+	\end{itemize}
+    \end{itemize}
+    \item Fractal dimensionality $d_f$
+    \begin{itemize}
+    	\item $m(r)\sim r^{d_f}$
+    	\item $\log m\sim {d_f}\log r$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
   \frametitle{DLA Cluster: RNG Seed $= 6$}
@@ -340,34 +394,34 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 \end{frame}
 
 \begin{frame}
-  \frametitle{DLA Cluster: RNG Seed $= 10$}
+  \frametitle{DLA Cluster: RNG Seed $= 11$}
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_seed_num_10.pdf}
+  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_seed_num_11.pdf}
 \end{figure}
 \end{frame}
 
 \begin{frame}
-  \frametitle{DLA Cluster Mass: RNG Seed $= 10$}
+  \frametitle{DLA Cluster Mass: RNG Seed $= 11$}
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_mass_seed_num_10.pdf}
+  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_mass_seed_num_11.pdf}
 \end{figure}
 \end{frame}
 
 \begin{frame}
-  \frametitle{DLA Cluster: RNG Seed $= 12$}
+  \frametitle{DLA Cluster: RNG Seed $= 14$}
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_seed_num_12.pdf}
+  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_seed_num_14.pdf}
 \end{figure}
 \end{frame}
 
 \begin{frame}
-  \frametitle{DLA Cluster Mass: RNG Seed $= 12$}
+  \frametitle{DLA Cluster Mass: RNG Seed $= 14$}
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_mass_seed_num_12.pdf}
+  \includegraphics[width=0.9\textwidth]{problem_3/large_cluster_mass_seed_num_14.pdf}
 \end{figure}
 \end{frame}
 
@@ -377,14 +431,15 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
   \begin{itemize}
     \item Running over 10 different RNG seeds we find:
     \begin{itemize}
-      \item $\left<d_{f}\right> = 1.30$, with Std. Dev. $= 0.10$ 
+      \item $d_f$ of 10 different DLA clusters: $[1.608, \,1.805, \,1.700, \,1.609, \,1.994, \,1.641, \,1.479, \,1.536, \,1.642, \,1.595]$
+      \item $\left<d_{f}\right> = 1.66$
+      \item $\sigma_{d_f}= 0.14$ 
     \end{itemize}
   \end{itemize}
 
 % You can position text/figures/anyting at an arbitrary position with textblock*
-\begin{textblock*}{0.9\textwidth}(1.4cm,8.5cm) % {block width} (coords) note coords are from upper left corner
-{\tiny All $d_{f\,\mathrm{fit}} = 1.3347,\,1.3463,\,1.4241,\,1.3854,\,1.0841,\,1.3420,\,1.3673,\,1.2641,\,1.2410,\,1.1970$}
-\end{textblock*}
+%\begin{textblock*}{0.9\textwidth}(1.2cm,5.5cm) % {block width} (coords) note coords are from upper left corner
+%{\tiny All $d_{f\,\mathrm{fit}} = 1.3347,\,1.3463,\,1.4241,\,1.3854,\,1.0841,\,1.3420,\,1.3673,\,1.2641,\,1.2410,\,1.1970$}
 
 \end{frame}
 
