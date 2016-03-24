@@ -38,8 +38,6 @@ def plot(sigma, t, color1, color2):
     :return: null.
     """
     global x, rho
-    guess = np.array([1.0])  # initial guess
-    popt, pcov = curve_fit(func, x, rho, guess)  # curve fitting
     y = 1.0 / (sqrt(2 * pi) * sigma) * np.exp(- x ** 2 / (2 * sigma ** 2))
     # plot
     plt.plot(x, rho, marker='o', markevery=5, color=color1, mec=color1, label='Numeric result $(t = %.2f)$' % t)
