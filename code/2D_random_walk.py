@@ -66,6 +66,7 @@ steps=np.arange(4, n + 1, 1)                  #Get an array of steps to use for 
 
 coefficients=np.polyfit(steps, distNew, 1)   #Fit the Data Using a Linear Polyfit
 slope=coefficients[0]                      #Get the Slope Coefficient
+print 'D = %f' % (slope / 4.0)             # Print Diffusion constant
 diffCoeff=slope/2                          #Get the Diffusion Coefficient
 
 eq=np.poly1d(coefficients)           #Get the Equation of the Line with a symbolic independent variable
