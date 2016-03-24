@@ -162,19 +162,19 @@
 	\qquad for j in range(int(m)):   	\\
     \qquad \qquad x = 0               	\\        
     \qquad \qquad y = 0               	\\    
-    \qquad for i in range(n):    	 	\\
-    \qquad \qquad r = random.random() 	\\
-    \qquad \qquad if r <= 0.25:       	\\
-    \qquad \qquad \qquad x += 1     		\\
-    \qquad \qquad elif r <= 0.5:		 	\\
-    \qquad \qquad \qquad x -= 1			\\
-    \qquad \qquad elif r <= 0.75:		\\
-    \qquad \qquad \qquad y += 1	 		\\
-    \qquad \qquad else:				 	\\
-    \qquad \qquad \qquad y -= 1			\\
-    \qquad \qquad xAve[i] += x   		\\                         
-    \qquad \qquad x2ave[i] += x ** 2    \\
-    \qquad \qquad dist2[i] += x ** 2 + y ** 2
+    \qquad \qquad for i in range(n):    	 	\\
+    \qquad \qquad \qquad r = random.random() 	\\
+    \qquad \qquad \qquad if r <= 0.25:       	\\
+    \qquad \qquad \qquad\qquad x += 1     		\\
+    \qquad \qquad \qquad elif r <= 0.5:		 	\\
+    \qquad \qquad \qquad\qquad x -= 1			\\
+    \qquad \qquad \qquad elif r <= 0.75:		\\
+    \qquad \qquad \qquad\qquad y += 1	 		\\
+    \qquad \qquad \qquad else:				 	\\
+    \qquad \qquad \qquad \qquad y -= 1			\\
+    \qquad \qquad \qquad xAve[i] += x   		\\                         
+    \qquad \qquad \qquad x2ave[i] += x ** 2    \\
+    \qquad \qquad \qquad dist2[i] += x ** 2 + y ** 2
 	}
 \end{frame}
 
@@ -196,14 +196,14 @@
 	\frametitle{Part B}
 	\tt
 	{
-	\qquad steps=np.arange(4, n + 1, 1)    \\               
+	\qquad steps = np.arange(4, n + 1, 1)    \\               
 	~\\
-	\qquad coefficients=np.polyfit(steps, distNew, 1)   \\
-	\qquad slope=coefficients[0]                     
-	\qquad diffCoeff=slope/2                          	\\
+	\qquad coefficients = np.polyfit(steps, distNew, 1)   \\
+	\qquad slope = coefficients[0]           \\          
+	\qquad diffCoeff = slope/2                          	\\
   	~\\
-	\qquad eq=np.poly1d(coefficients) \\          
-	\qquad eqSteps=eq(steps)    \\                
+	\qquad eq = np.poly1d(coefficients) \\          
+	\qquad eqSteps = eq(steps)    \\                
 	}
 \end{frame}
 
@@ -293,7 +293,7 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 		\item Set spatial and time step size
 		\begin{itemize}
 		\item
-		$\Delta x = 0.05, \Delta t = 10^{-4}, D = 2$ which satisfy $\Delta t \leq (\Delta x)^{2}/(2D)$
+		$\Delta x = 0.05, \Delta t = 10^{-4}$ which satisfy $\Delta t \leq (\Delta x)^{2}/(2D)$
 		\end{itemize}
 		\item Set boundary conditions
 	    \begin{itemize}
