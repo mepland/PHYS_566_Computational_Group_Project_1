@@ -28,12 +28,13 @@ def func(x, sigma):
     return 1.0 / (sqrt(2 * pi) * sigma) * np.exp(- x ** 2 / (2.0 * sigma ** 2))
 
 
-def plot(sigma, t,color1, color2):
+def plot(sigma, t, color1, color2):
     """
     Plot the figure.
-    :param file_name: file name.
     :param sigma: sigma.
     :param t: time.
+    :param color1: color of the numerical result
+    :param color2: color of gaussian fit
     :return: null.
     """
     global x, rho
