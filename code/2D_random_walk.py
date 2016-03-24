@@ -81,8 +81,8 @@ make_path(plots_path)
 plt.figure()  
 plt.plot(steps, xAveNew,'r.', label="Mean Distance")
 #plt.title(r'$\langle x_{n} \rangle$' + ' Plot', fontsize=15)   #Plot Annotations
-plt.xlabel('Time', fontsize=12)
-plt.ylabel('Distance Travelled', fontsize=12)
+plt.xlabel(r'$t$', fontsize=12)
+plt.ylabel(r'$\langle x_n \rangle$', fontsize=12)
 #plt.legend()
 plt.savefig(plots_path + '/xn_Plot.pdf')               #Save the Plot as a PDF
 plt.close()
@@ -91,8 +91,8 @@ plt.close()
 plt.figure()  
 plt.plot(steps, x2aveNew,'r.', label="Mean Square Distance")
 #plt.title(r'$\langle x_{n}^{2} \rangle$' + ' Plot', fontsize=15)   #Plot Annotations
-plt.xlabel('Time', fontsize=12)
-plt.ylabel('Distance Travelled Squared', fontsize=12)
+plt.xlabel(r'$t$', fontsize=12)
+plt.ylabel(r'$\langle x^{2}_n \rangle$', fontsize=12)
 #plt.legend()
 plt.savefig(plots_path + '/xn2_Plot.pdf')               #Save the Plot as a PDF
 plt.close()
@@ -102,8 +102,8 @@ plt.figure()
 plt.plot(steps, distNew,'r.', label="Mean Square Distance")
 plt.plot(steps, eqSteps,'b',linewidth=2, label="Linear Fit")
 #plt.title("Diffusive Motion Plot", fontsize=15)   #Plot Annotations
-plt.xlabel('Time', fontsize=12)
-plt.ylabel('Distance Travelled Squared', fontsize=12)
+plt.xlabel(r'$t$', fontsize=12)
+plt.ylabel(r'$\langle r^{2} \rangle$', fontsize=12)
 plt.legend(loc='upper left')
 plt.savefig(plots_path + '/Diffusion_Plot.pdf')               #Save the Plot as a PDF
 plt.close()
