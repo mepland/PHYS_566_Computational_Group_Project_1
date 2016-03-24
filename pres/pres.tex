@@ -130,7 +130,73 @@
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Problem 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+	\frametitle{Problem 1 Overview}
+	\begin{itemize}
+		\item In Part A, we used the random number generator to determine the direction of the walker's motion. We used two for loops one for the number of walks and one for the number of steps in a single random walk. 
+		\item In Part B, we used the polyfit function to fit a linear function to the mean square distance data.
+	\end{itemize}
+\end{frame}
 
+\begin{frame}
+	\frametitle{Part A (1/3)}
+	{
+	\tt
+	\qquad n = 100     \\                                 	\qquad m = 10000.0   \\                             	~\\	\qquad x2ave=np.asarray([0.0]*n) \\                	\qquad y2ave=np.copy(x2ave)      \\                 	\qquad xAve=np.copy(x2ave)       \\                  	\qquad dist2=np.copy(x2ave)                        
+	}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Part A (2/3)}
+	{
+	\tt
+	\qquad for j in range(int(m)):   	\\    \qquad \qquad x = 0               	\\            \qquad \qquad y = 0               	\\        \qquad for i in range(n):    	 	\\    \qquad \qquad r = random.random() 	\\    \qquad \qquad if r <= 0.25:       	\\    \qquad \qquad \qquad x += 1     		\\    \qquad \qquad elif r <= 0.5:		 	\\    \qquad \qquad \qquad x -= 1			\\    \qquad \qquad elif r <= 0.75:		\\    \qquad \qquad \qquad y += 1	 		\\    \qquad \qquad else:				 	\\    \qquad \qquad \qquad y -= 1			\\    \qquad \qquad xAve[i] += x   		\\                             \qquad \qquad x2ave[i] += x ** 2    \\    \qquad \qquad dist2[i] += x ** 2 + y ** 2
+	}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Part A (3/3)}
+	{
+	\tt
+	\qquad xAve /= m  				\\    \qquad x2ave /= m               	\\            \qquad dist2 /= m               	\\
+	~\\        \qquad distNew = dist2[3:100]   \\                     	\qquad xAveNew = xAve[3:100]  	\\                      	\qquad x2aveNew = x2ave[3:100]  \\                
+	}	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Part B}
+	\tt
+	{
+	\qquad steps=np.arange(4, n + 1, 1)    \\               	~\\	\qquad coefficients=np.polyfit(steps, distNew, 1)   \\	\qquad slope=coefficients[0]                     	\qquad diffCoeff=slope/2                          	\\  	~\\	\qquad eq=np.poly1d(coefficients) \\          	\qquad eqSteps=eq(steps)    \\                
+	}
+\end{frame}
+
+\begin{frame}
+	\frametitle{$\expval{x_n}$ Plot}
+	\begin{figure}
+  		\centering
+  		\includegraphics[width=0.9\textwidth]{../output/plots_for_paper/problem_1/xn_Plot.pdf}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{$\expval{x^{2}_n}$ Plot}
+	\begin{figure}
+  		\centering
+  		\includegraphics[width=0.9\textwidth]{../output/plots_for_paper/problem_1/xn2_Plot.pdf}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{$\expval{r^{2}}$ Plot}
+	\begin{figure}
+  		\centering
+  		\includegraphics[width=0.9\textwidth]{../output/plots_for_paper/problem_1/Diffusion_Plot.pdf}
+	\end{figure}
+\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -211,7 +277,7 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 	    \item Loop over time steps and spatial steps
 	    \begin{itemize}
 	    	\item {
-	    	\tt
+	    	\tt	
 	    	for i in range(t\_max): \\
 	    	\qquad for j in range(size):\\
 	    	\qquad \qquad $\rho$[j] += D*dt*($\rho$[j+1] - 2*$\rho$[j] + $\rho$[j-1])/dx$^{2}$
