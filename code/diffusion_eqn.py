@@ -34,7 +34,7 @@ def plot(sigma, t, color1, color2):
     :param sigma: sigma.
     :param t: time.
     :param color1: color of the numerical result
-    :param color2: color of gaussian fit
+    :param color2: color of the Gaussian fit
     :return: null.
     """
     global x, rho
@@ -42,15 +42,6 @@ def plot(sigma, t, color1, color2):
     # plot
     plt.plot(x, rho, marker='o', markevery=5, color=color1, mec=color1, label='Numeric result $(t = %.2f)$' % t)
     plt.plot(x, y, color=color2, lw=1, label=r'Gaussian fit with $\sigma(t) = %.5f$' % sigma)
-#    plt.title('Diffusion in one dimension at t = %.2f' % t)
-#    plt.xlabel('position ' + r'$x$')
-#    plt.ylabel('density ' + r'$\rho(x)$')
-#    plt.legend()
-#    fig = plt.gcf()
-#    fig.set_size_inches(12, 10, forward=True)
-#    plt.savefig(plots_path + '/' + file_name + '.pdf')
-#    plt.close()
-
 
 # initialization
 D = 2.0           # diffusion constant
