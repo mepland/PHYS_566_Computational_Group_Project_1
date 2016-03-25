@@ -164,6 +164,8 @@ In the second part, we use numerical methods to solve the 1D diffusion equation 
 \subsection{Cluster Growth with the DLA Model}
 We generate 2D clusters of radius 100 using the Diffusion Limited Aggregation (DLA) Model and extract the fractal dimensionality by fitting the log-log plots of the cluster mass and the radius. We repeat the cluster growth procedure for 10 times with different random number generator seeds to improve the accuracy of the fractal dimensionality extraction. Several representative samples and the corresponding fitting plots are shown and the results are discussed. 
 
+
+%%%%%%%%%%%%%%%%%% Theory %%%%%%%%%%%%%%%%%%%%%%%%
 \section{Theory}
 \label{sec:theory}
 \subsection{2D Random Walk}
@@ -216,7 +218,7 @@ In this part, a line is fitted to the dist2 data. The code for fitting this line
 	
 	\noindent coefficients=np.polyfit(steps, distNew, 1)     \newline 
 	\noindent slope=coefficients[0]                          \newline          
-	\noindent diffCoeff=slope/2                              \newline         
+	\noindent diffCoeff=slope/4                               \newline         
 	
 	\noindent eq=np.poly1d(coefficients)                     \newline               
 	\noindent eqSteps=eq(steps)   }                          \newline
@@ -227,10 +229,10 @@ Steps is the number of time steps that are used. The polyfit function of degree 
 The diffusion coefficient can be found from:
 
 \begin{equation}
-	\expval{d^{2}}=2Dt
+	\expval{d^{2}}=4Dt
 \end{equation}
 
-where $\expval{d^{2}}$ is the mean distance squared, $D$ is the diffusion coefficient, and $t$ is the time or step number. The diffusion coefficient can be found by dividing the slope by 2. The slope equals $\expval{d^{2}}/t$.
+where $\expval{d^{2}}$ is the mean distance squared, $D$ is the diffusion coefficient, and $t$ is the time or step number. The diffusion coefficient can be found by dividing the slope by 4. 
 
 Using the poly1d function a symbolic equation for the fitted line can be obtained as shown:
 
@@ -301,6 +303,9 @@ where $m(r)$ is the mass of the cluster inside a circle of radius $r$. Taking th
 \end{equation}
 which means that the slope of a log-log plot of $m$ versus $r$ is exactly the fractal dimensionality.
 
+
+
+%%%%%%%%%%%%%%%%%%%%%% Results %%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Results}
 \label{sec:results}
@@ -389,9 +394,9 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 \begin{figure}[!h]
 \centering
 \subfigure[DLA cluster]
-{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_6.pdf}}
+{\includegraphics[width=3.4in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_6.pdf}}
 \subfigure[Fractal dimensionality extraction]
-{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_6.pdf}}
+{\includegraphics[width=3.4in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_6.pdf}}
 \caption{DLA cluster representative sample I}
 \label{dla1}
 \end{figure}
@@ -399,9 +404,9 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 \begin{figure}[!h]
 \centering
 \subfigure[DLA cluster]
-{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_8.pdf}}
+{\includegraphics[width=3.4in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_8.pdf}}
 \subfigure[Fractal dimensionality extraction]
-{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_8.pdf}}
+{\includegraphics[width=3.4in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_8.pdf}}
 \caption{DLA cluster representative sample II}
 \label{dla2}
 \end{figure}
@@ -409,9 +414,9 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 \begin{figure}[!h]
 \centering
 \subfigure[DLA cluster]
-{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_11.pdf}}
+{\includegraphics[width=3.4in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_11.pdf}}
 \subfigure[Fractal dimensionality extraction]
-{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_11.pdf}}
+{\includegraphics[width=3.4in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_11.pdf}}
 \caption{DLA cluster representative sample III}
 \label{dla3}
 \end{figure}
@@ -419,21 +424,22 @@ Let $n = 1$ and $a = \sqrt{2}\sigma(t)$, we can get
 \begin{figure}[!h]
 \centering
 \subfigure[DLA cluster]
-{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_14.pdf}}
+{\includegraphics[width=3.4in]{../output/plots_for_paper/problem_3/large_cluster_seed_num_14.pdf}}
 \subfigure[Fractal dimensionality extraction]
-{\includegraphics[width=3.2in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_14.pdf}}
+{\includegraphics[width=3.4in]{../output/plots_for_paper/problem_3/large_cluster_mass_seed_num_14.pdf}}
 \caption{DLA cluster representative sample IV}
 \label{dla4}
 \end{figure}
 
 
+%%%%%%%%%%%%%%%%%%%% Discussion %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Discussion}
 \label{sec:Conclusions}
 \subsection{2D Random Walk}
-In Part A, as expected the distance traveled moves both in the positive and negative directions since the random walker moves both in the positive and negative directions.
+In Fig.\ref{fig:1_a_1}, the average position of the walker looks to be around 0. The values fluctuate around 0 with a maximum value around 0.04 and a minimum value around -0.01. In Fig.\ref{fig:1_a_2}, the mean value of $x^2$ of the walker increases linearly with time and the slope of the graph is around 0.5.
 
-In Part B, the results show that the relationship between distance traveled squared and time is linear. These results also show that the distance traveled square increases as time increases.
+In Part B, the results show that the relationship between distance traveled squared and time is linear. These results also show that the distance traveled square increases as time increases. By an "eyeball" fit to the plot, we find the diffusion constant to be 0.25.
 
 \subsection{Diffusion Equation}
 As can be seen from the Fig.~\eqref{fig:2}, the numerical solutions coincide well with the analytic solutions. This figure also shows the evolution of a Gaussian pulse which gradually decreases in height and broadens in width. Table.~\eqref{table:prob_2} shows that $\sigma(t) = \sqrt{2Dt}$ and the percent error is around $4.5\%$. We can reduce the error by increasing the size of the boundary and decreasing the step size. Since the step size is limited by Eqn.~\eqref{eq:2_4}, it will be very time-consuming if we use smaller step size. 
@@ -445,7 +451,7 @@ By repeating the cluster growth procedure for 10 times using different random nu
 
 
 
-
+%%%%%%%%%%%%%%% Supporting Material %%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Supporting Material}
 \label{sec:Supporting_Material}
